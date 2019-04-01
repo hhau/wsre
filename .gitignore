@@ -1,0 +1,15 @@
+*.pdf
+*.png
+*.rds
+
+*.so
+*.o
+*.dll
+
+
+*.Rproj.user
+*.Rhistory
+*.RData
+*.Ruserdata
+
+*.DS_Store
