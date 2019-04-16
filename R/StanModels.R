@@ -1,8 +1,10 @@
 # Automatically generated
-loadModule('stan_fit4weighted_normal_mod', TRUE)
+loadModule('stan_fit4binom_mod', TRUE)
+loadModule('stan_fit4normal_mod', TRUE)
 .stan_modules <-
-list(weighted_normal = list(name = "weighted_normal", stan_file = "src/stan_files/weighted-normal.stan", 
-    module_name = "stan_fit4weighted_normal_mod"))
+list(binom = list(name = "binom", stan_file = "src/stan_files/binom.stan", 
+    module_name = "stan_fit4binom_mod"), normal = list(name = "normal", 
+    stan_file = "src/stan_files/normal.stan", module_name = "stan_fit4normal_mod"))
 .stan_models <- lapply(.stan_modules, function(input) {
   stanfit <- rstan::stanc(
    input$stan_file,

@@ -1,12 +1,12 @@
 #include <Rcpp.h>
 using namespace Rcpp ;
-#include "stan_files/weighted-normal.hpp"
+#include "stan_files/binom.hpp"
 typedef rstan::stan_fit<stan_model, boost::random::ecuyer1988> stan_model_fit;
 
-RCPP_MODULE(stan_fit4weighted_normal_mod) {
+RCPP_MODULE(stan_fit4binom_mod) {
 
 
-    class_<stan_model_fit>("model_weighted_normal")
+    class_<stan_model_fit>("model_binom")
 
     .constructor<SEXP,SEXP,SEXP>()
 

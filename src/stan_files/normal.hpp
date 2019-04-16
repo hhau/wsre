@@ -6,7 +6,7 @@
 
 #include <stan/model/model_header.hpp>
 
-namespace model_weighted_normal_namespace {
+namespace model_normal_namespace {
 
 using std::istream;
 using std::string;
@@ -21,25 +21,25 @@ static int current_statement_begin__;
 
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
-    reader.add_event(0, 0, "start", "model_weighted_normal");
-    reader.add_event(25, 23, "end", "model_weighted_normal");
+    reader.add_event(0, 0, "start", "model_normal");
+    reader.add_event(25, 23, "end", "model_normal");
     return reader;
 }
 
-class model_weighted_normal : public prob_grad {
+class model_normal : public prob_grad {
 private:
     int target_dimension;
     double wf_mean;
     double wf_sd;
     double wf_exponent;
 public:
-    model_weighted_normal(stan::io::var_context& context__,
+    model_normal(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
         ctor_body(context__, 0, pstream__);
     }
 
-    model_weighted_normal(stan::io::var_context& context__,
+    model_normal(stan::io::var_context& context__,
         unsigned int random_seed__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
@@ -57,7 +57,7 @@ public:
 
         current_statement_begin__ = -1;
 
-        static const char* function__ = "model_weighted_normal_namespace::model_weighted_normal";
+        static const char* function__ = "model_normal_namespace::model_normal";
         (void) function__;  // dummy to suppress unused var warning
         size_t pos__;
         (void) pos__;  // dummy to suppress unused var warning
@@ -119,7 +119,7 @@ public:
         }
     }
 
-    ~model_weighted_normal() { }
+    ~model_normal() { }
 
 
     void transform_inits(const stan::io::var_context& context__,
@@ -257,7 +257,7 @@ public:
 
         vars__.resize(0);
         stan::io::reader<local_scalar_t__> in__(params_r__,params_i__);
-        static const char* function__ = "model_weighted_normal_namespace::write_array";
+        static const char* function__ = "model_normal_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
         vector<double> x;
@@ -320,7 +320,7 @@ public:
     }
 
     static std::string model_name() {
-        return "model_weighted_normal";
+        return "model_normal";
     }
 
 
@@ -367,7 +367,7 @@ public:
 
 }
 
-typedef model_weighted_normal_namespace::model_weighted_normal stan_model;
+typedef model_normal_namespace::model_normal stan_model;
 
 
 #endif

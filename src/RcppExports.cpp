@@ -7,10 +7,12 @@
 using namespace Rcpp;
 
 
-RcppExport SEXP _rcpp_module_boot_stan_fit4weighted_normal_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4binom_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4normal_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_stan_fit4weighted_normal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4weighted_normal_mod, 0},
+    {"_rcpp_module_boot_stan_fit4binom_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4binom_mod, 0},
+    {"_rcpp_module_boot_stan_fit4normal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4normal_mod, 0},
     {NULL, NULL, 0}
 };
 
