@@ -43,3 +43,10 @@ There are some technical problems I don't yet quite know the answer too:
     - `wf_mean`, `wf_sd`, `wf_exp` etc (last one is useful to turn things off)
     - Recompile every time a new model is added? Doesn't seem unreasonable, probably not going to happen too often.
 - `Rcpp` code and `Stan` code in one package? How do / how not to have one ruin the other?
+
+## Package notes
+
+- `wsre` stands for _weighted self ratio estimation_. We are trying to estimate the ratio of an unknown probability density function `r(x_nu, x_de) = p(x_nu) / p(x_de)`.
+    - It is _weighted_ in two important ways.
+        1. The samples used to estimate `r(x_nu, x_de)` come from a weighted version of the target density, so that we can learn out the tails faster.
+        1. The resulting ratio estimate is a weighted sum of other ratio estimates.

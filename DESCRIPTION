@@ -1,13 +1,13 @@
 Package: wsre
-Title: What the Package Does (One Line, Title Case)
+Title: Weighted Self-Ratio estimation
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Andrew",
+           family = "Manderson",
            role = c("aut", "cre"),
-           email = "first.last@example.com")
+           email = "andrew.manderson@mrc-bsu.cam.ac.uk")
 Description: What the package does (one paragraph).
-License: What license it uses
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
@@ -16,11 +16,14 @@ Depends:
   Rcpp (>= 0.12.16),
   methods
 Imports:
-  rstan (>= 2.18.1),
-  StanHeaders (>= 2.18.0),
-  BH (>= 1.66.0.1),
-  Rcpp (>= 0.12.16),
-  RcppEigen (>= 0.3.3.4.0)
+    rstan (>= 2.18.1),
+    StanHeaders (>= 2.18.0),
+    BH (>= 1.66.0.1),
+    Rcpp (>= 0.12.16),
+    RcppEigen (>= 0.3.3.4.0),
+    futile.logger,
+    magrittr,
+    stats
 LinkingTo:
   StanHeaders (>= 2.18.0),
   rstan (>= 2.18.1),
