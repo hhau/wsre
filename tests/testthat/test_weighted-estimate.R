@@ -1,9 +1,15 @@
 context("weighted ratio estimate")
 
+futile.logger::flog.threshold(futile.logger::TRACE) 
+
 weighted_est <- weighted_ratio_estimate(
-  "normal",
-  list(wf_mean = 3, wf_sd = 2, wf_exponent = 1, target_dimension = 1),
-  800
+  model_name = "normal",
+  wf_pars = list(wf_mean = 3, wf_sd = 2, wf_exponent = 1, target_dimension = 1),
+  n_mcmc_samples = 800,
+  stan_control_params = list(
+    adapt_delta = 0.95,
+    max_treedepth = 12
+  )
 )
 
 test_that("That the function succeeds and returns the expected class", {

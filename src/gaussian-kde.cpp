@@ -6,10 +6,10 @@ NumericVector weighting_function(
   NumericVector x,
   double wf_mean,
   double wf_sd,
-  double wf_exp // this needs to be one to precisely control the product mean
+  double wf_exponent // this needs to be one to precisely control the product mean
 ) {
   NumericVector result(x.size()); 
-  result = pow(dnorm(x, wf_mean, wf_sd), wf_exp);
+  result = pow(dnorm(x, wf_mean, wf_sd), wf_exponent);
   return(result);
 }
 
@@ -40,7 +40,7 @@ NumericVector weight_gauss_kde_jones(
   NumericVector weighted_samples,
   double wf_mean,
   double wf_sd,
-  double wf_exp,
+  double wf_exponent,
   double bandwidth
 ) {
   int n_vals = x.size();
@@ -50,7 +50,7 @@ NumericVector weight_gauss_kde_jones(
     weighted_samples,
     wf_mean,
     wf_sd,
-    wf_exp
+    wf_exponent
   ), -1.0);
  
   for (int ii = 0; ii < n_vals; ++ii) {
@@ -69,7 +69,7 @@ NumericVector weight_gauss_kde_bhatt(
   NumericVector weighted_samples,
   double wf_mean,
   double wf_sd,
-  double wf_exp,
+  double wf_exponent,
   double bandwidth
 ) {
   int n_vals = x.size();
@@ -79,7 +79,7 @@ NumericVector weight_gauss_kde_bhatt(
     x,
     wf_mean,
     wf_sd,
-    wf_exp
+    wf_exponent
   ), -1.0);
 
   for (int ii = 0; ii < n_vals; ++ii) {
