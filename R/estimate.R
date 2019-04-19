@@ -1,3 +1,25 @@
+#' Weighted Self Ratio Estimation
+#' 
+#' Estimates the self ratio of a given model using a number of weighting 
+#' functions.
+#'
+#' @param model_name String: "normal" or "binom" at the moment. Must be the name
+#' of a \code{.stan} file in the \code{stan_files} directory.
+#' @param wf_mean Numeric Vector: vector of means of weighting functions. May be
+#' computed automatically in the future.
+#' @param wf_pars Named List: see default for structure; other parameters for
+#' the weighting function 
+#' @param n_mcmc_samples Integer: number of MCMC samples to draw from each of 
+#' the targets.
+#' @param stan_control_params Named List: see \code{control} section of
+#' \code{\link[rstan]{stan}}.
+#' @param flog_threshold Special: See 
+#' \code{\link[futile.logger]{futile.logger-package}}. Set to 
+#' \code{futile.logger::TRACE} to see informational messages about what is going
+#' on.
+#'
+#' @return A \code{wsre} object for saving / use in other functions
+#' @export
 wsre <- function(
   model_name = c("normal", "binom"),
   wf_mean = c(-3, 3, 5),
@@ -35,7 +57,26 @@ wsre <- function(
       n_mcmc_samples = n_mcmc_samples,
       stan_control_params = stan_control_params
     )
+    return(sub_obj)
   })
+  n_ests <- length(wf_mean) + 1
+  wsre_estimates[[n_ests]] <- naive_estimate
+
+  # big object - I don't know what to call this
+  # this is going to be written to disk quite a bit, so best to keep the info
+  # around about how it was created?
+  # need to check that all the closures work okay - write tests?
+  output <- list(
+    properties = list(
+      model_name = model_name,
+      n_mcmc_samples = n_mcmc_samples,
+      stan_control_params = stan_control_params
+    ),
+    estimates = wsre_estimates
+  )
+  
+  class(output) <- "wsre"
+  return(output)
 
 }
 

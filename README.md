@@ -23,6 +23,9 @@ files, even when they have been unmodified since last install. However, the
 use of `stanmodularise` halves the compilation time when making pure `R` changes
 to the package (I think).
 
+Sometimes the NAMESPACE file will get out of sync. It will need to be deleted,
+and `devtools::document()` has to be run __before__ `devtools::load_all()`.
+
 ## Development notes to self
 
 There are a few different tasks I want to accomplish here

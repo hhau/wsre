@@ -23,7 +23,8 @@ Imports:
     RcppEigen (>= 0.3.3.4.0),
     futile.logger,
     magrittr,
-    stats
+    stats,
+    parallel
 LinkingTo:
   StanHeaders (>= 2.18.0),
   rstan (>= 2.18.1),

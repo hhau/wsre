@@ -22,6 +22,5 @@ NULL
 }
 
 .is_numerically_okay <- function(x) {
-  # I should do this properly, but later - specifically the zero bit
-  !(is.infinite(x) | is.nan(x) | is.na(x) | x == 0)
+  !(is.infinite(x) | is.nan(x) | is.na(x) | abs(x) < .Machine$double.eps)
 }
