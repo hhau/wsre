@@ -4,7 +4,7 @@ data {
   // weighting function arguments
   real wf_mean;
   real <lower = 0> wf_sd;
-  real <lower = 0> wf_exp;
+  real <lower = 0> wf_exponent;
 
   // in this example this will be zero, but needed for consistency with other
   // model signatures
@@ -32,5 +32,5 @@ model {
     (N_x - x) * log1m(P_x); // ideally combine with lmultiply, but not possible
 
   // weighting function - normal again
-  target += wf_exp * normal_lpdf(x | wf_mean, wf_sd);
+  target += wf_exponent * normal_lpdf(x | wf_mean, wf_sd);
 }

@@ -22,7 +22,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_binom");
-    reader.add_event(37, 35, "end", "model_binom");
+    reader.add_event(38, 36, "end", "model_binom");
     return reader;
 }
 
@@ -30,7 +30,7 @@ class model_binom : public prob_grad {
 private:
     double wf_mean;
     double wf_sd;
-    double wf_exp;
+    double wf_exponent;
     int target_dimension;
 public:
     model_binom(stan::io::var_context& context__,
@@ -81,12 +81,12 @@ public:
             pos__ = 0;
             wf_sd = vals_r__[pos__++];
             current_statement_begin__ = 7;
-            context__.validate_dims("data initialization", "wf_exp", "double", context__.to_vec());
-            wf_exp = double(0);
-            vals_r__ = context__.vals_r("wf_exp");
+            context__.validate_dims("data initialization", "wf_exponent", "double", context__.to_vec());
+            wf_exponent = double(0);
+            vals_r__ = context__.vals_r("wf_exponent");
             pos__ = 0;
-            wf_exp = vals_r__[pos__++];
-            current_statement_begin__ = 10;
+            wf_exponent = vals_r__[pos__++];
+            current_statement_begin__ = 11;
             context__.validate_dims("data initialization", "target_dimension", "int", context__.to_vec());
             target_dimension = int(0);
             vals_i__ = context__.vals_i("target_dimension");
@@ -98,8 +98,8 @@ public:
             current_statement_begin__ = 6;
             check_greater_or_equal(function__,"wf_sd",wf_sd,0);
             current_statement_begin__ = 7;
-            check_greater_or_equal(function__,"wf_exp",wf_exp,0);
-            current_statement_begin__ = 10;
+            check_greater_or_equal(function__,"wf_exponent",wf_exponent,0);
+            current_statement_begin__ = 11;
             check_greater_or_equal(function__,"target_dimension",target_dimension,0);
             // initialize data variables
 
@@ -109,11 +109,11 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 14;
-            ++num_params_r__;
             current_statement_begin__ = 15;
             ++num_params_r__;
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 16;
+            ++num_params_r__;
+            current_statement_begin__ = 19;
             ++num_params_r__;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -240,14 +240,14 @@ public:
 
             // model body
 
-            current_statement_begin__ = 23;
-            lp_accum__.add(beta_log<propto__>(P_x, 864.0, 648.0));
             current_statement_begin__ = 24;
+            lp_accum__.add(beta_log<propto__>(P_x, 864.0, 648.0));
+            current_statement_begin__ = 25;
             lp_accum__.add(lognormal_log<propto__>(N_x, 4.9299999999999997, 0.012));
-            current_statement_begin__ = 27;
+            current_statement_begin__ = 28;
             lp_accum__.add((((stan::math::lgamma((N_x - 1)) - (stan::math::lgamma((x - 1)) + stan::math::lgamma(((N_x - x) - 1)))) + multiply_log(x,P_x)) + ((N_x - x) * log1m(P_x))));
-            current_statement_begin__ = 34;
-            lp_accum__.add((wf_exp * normal_log(x,wf_mean,wf_sd)));
+            current_statement_begin__ = 35;
+            lp_accum__.add((wf_exponent * normal_log(x,wf_mean,wf_sd)));
 
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
