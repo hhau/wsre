@@ -1,5 +1,5 @@
 Package: wsre
-Title: Weighted Self-Ratio estimation
+Title: Weighted Self-Density Ratio estimation
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Andrew",
