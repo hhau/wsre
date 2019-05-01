@@ -55,7 +55,8 @@ wsre <- function(
       model_name = model_name,
       wf_pars = wf_pars,
       n_mcmc_samples = n_mcmc_samples,
-      stan_control_params = stan_control_params
+      stan_control_params = stan_control_params,
+      bandwidth = naive_estimate$naive_bandwidth
     )
     return(sub_obj)
   })
@@ -114,7 +115,12 @@ naive_ratio_estimate <- function(
     exp(log(kde_est(x_nu)) + log(kde_est(x_de)))
   }
 
-  ratio_obj <- list(wf_pars = wf_pars, ratio = ratio, weighting = weighting)
+  ratio_obj <- list(
+    wf_pars = wf_pars,
+    ratio = ratio,
+    weighting = weighting,
+    naive_bandwidth = bandwidth
+  )
 
   class(ratio_obj) <- "wsre_sub"
   return(ratio_obj)
@@ -125,7 +131,8 @@ weighted_ratio_estimate <- function(
   model_name,
   wf_pars,
   n_mcmc_samples,
-  stan_control_params
+  stan_control_params,
+  bandwidth
 ) {
 
   stanmodel <- .stan_models[[model_name]]
@@ -141,7 +148,7 @@ weighted_ratio_estimate <- function(
 
   # is now a numeric vector
   x_samples <- as.array(stanfit, pars = "x") %>% as.vector()
-  bandwidth <- stats::bw.SJ(x_samples)
+  # bandwidth <- stats::bw.SJ(x_samples)
   
   direct_kde_est <- function(x) {
     gauss_kde(x = x, x_samples = x_samples, bandwidth = bandwidth)

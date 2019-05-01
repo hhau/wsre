@@ -2,6 +2,8 @@ context("weighted ratio estimate")
 
 futile.logger::flog.threshold(futile.logger::TRACE) 
 
+bandwidth <- bw.SJ(rnorm(800))
+
 weighted_est <- weighted_ratio_estimate(
   model_name = "normal",
   wf_pars = list(wf_mean = 3, wf_sd = 2, wf_exponent = 1, target_dimension = 1),
@@ -9,7 +11,8 @@ weighted_est <- weighted_ratio_estimate(
   stan_control_params = list(
     adapt_delta = 0.95,
     max_treedepth = 12
-  )
+  ),
+  bandwidth = bandwidth
 )
 
 test_that("That the function succeeds and returns the expected class", {
