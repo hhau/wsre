@@ -6,10 +6,17 @@ NumericVector weighting_function(
   NumericVector x,
   double wf_mean,
   double wf_sd,
-  double wf_exponent // this needs to be one to precisely control the product mean
+  double wf_exponent, // this needs to be one to precisely control the product mean
+  bool log_scale
 ) {
-  NumericVector result(x.size()); 
-  result = pow(dnorm(x, wf_mean, wf_sd), wf_exponent);
+  NumericVector result(x.size());
+
+  if (log_scale) {
+    result = wf_exponent * dnorm(x, wf_mean, wf_sd, log_scale);
+  }  else {
+    result = pow(dnorm(x, wf_mean, wf_sd), wf_exponent);  
+  }
+  
   return(result);
 }
 
@@ -46,48 +53,20 @@ NumericVector weight_gauss_kde_jones(
   int n_vals = x.size();
   int n_samples = weighted_samples.size();
   NumericVector result(n_vals);
-  NumericVector wf_inv_vals = pow(weighting_function(
+  NumericVector log_wf_inv_vals = -1 * weighting_function(
     weighted_samples,
     wf_mean,
     wf_sd,
-    wf_exponent
-  ), -1.0);
+    wf_exponent,
+    true
+  );
  
   for (int ii = 0; ii < n_vals; ++ii) {
-    result[ii] = sum(
-      dnorm((x[ii] - weighted_samples) / bandwidth, 0.0, 1.0) * wf_inv_vals
-    );
+    result[ii] = sum(exp(
+      dnorm((x[ii] - weighted_samples) / bandwidth, 0.0, 1.0, true)  +  log_wf_inv_vals
+    ));
   }
 
   return(result / (n_samples * bandwidth));
-
-}
-
-// [[Rcpp::export]]
-NumericVector weight_gauss_kde_bhatt(
-  NumericVector x,
-  NumericVector weighted_samples,
-  double wf_mean,
-  double wf_sd,
-  double wf_exponent,
-  double bandwidth
-) {
-  int n_vals = x.size();
-  int n_samples = weighted_samples.size();
-  NumericVector result(n_vals);
-  NumericVector wf_inv_vals = pow(weighting_function(
-    x,
-    wf_mean,
-    wf_sd,
-    wf_exponent
-  ), -1.0);
-
-  for (int ii = 0; ii < n_vals; ++ii) {
-    result[ii] = sum(
-      dnorm((x[ii] - weighted_samples) / bandwidth, 0.0, 1.0)
-    );
-  }
-
-  return((result * wf_inv_vals) / (n_samples * bandwidth));
 
 }
