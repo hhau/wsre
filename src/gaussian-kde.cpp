@@ -9,6 +9,7 @@ NumericVector weighting_function(
   double wf_exponent, // this needs to be one to precisely control the product mean
   bool log_scale
 ) {
+
   NumericVector result(x.size());
 
   if (log_scale) {
@@ -18,6 +19,7 @@ NumericVector weighting_function(
   }
   
   return(result);
+
 }
 
 // This is one of those rare cases where the C++ version is only slightly faster
@@ -29,6 +31,7 @@ NumericVector gauss_kde(
   NumericVector x_samples,
   double bandwidth
 ) {
+
   int n_vals = x.size();
   int n_samples = x_samples.size();
   NumericVector result(n_vals);
@@ -50,6 +53,7 @@ NumericVector weight_gauss_kde_jones(
   double wf_exponent,
   double bandwidth
 ) {
+  
   int n_vals = x.size();
   int n_samples = weighted_samples.size();
   NumericVector result(n_vals);

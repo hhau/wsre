@@ -19,5 +19,4 @@ model {
 
   // weighting function
   target += (wf_exponent * normal_lpdf(x | wf_mean, wf_sd));
-
 }
