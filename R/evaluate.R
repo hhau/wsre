@@ -60,13 +60,13 @@ evaluate <- function(
   weights_matrix <- do.call(rbind, lapply(res, function(a_list) {
     a_list$weights
   }))
-  ratios_matirx <- do.call(rbind, lapply(res, function(a_list) {
+  ratios_matrix <- do.call(rbind, lapply(res, function(a_list) {
     a_list$w_ratios
   }))
   
   # colSums doesn't drop NA only columns, thank god!
   norm_const <- colSums(weights_matrix, na.rm = TRUE)
-  ratio_values <- colSums(ratios_matirx, na.rm = TRUE)
+  ratio_values <- colSums(ratios_matrix, na.rm = TRUE)
   return((1 / norm_const) * ratio_values)
 
 }
