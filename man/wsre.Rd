@@ -4,14 +4,19 @@
 \alias{wsre}
 \title{Weighted Self Ratio Estimation}
 \usage{
-wsre(model_name = c("normal", "binom"), wf_mean = c(-3, 3, 5),
+wsre(model_name = c("normal", "binom"),
+  stanmodel = .named_model(model_name), wf_mean = c(-3, 3, 5),
   wf_pars = list(wf_sd = 2, wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 5000, stan_control_params = list(adapt_delta = 0.95,
   max_treedepth = 12), flog_threshold = futile.logger::INFO)
 }
 \arguments{
-\item{model_name}{String: "normal" or "binom" at the moment. Must be the name
-of a \code{.stan} file in the \code{stan_files} directory.}
+\item{model_name}{String: Can the name of a \code{.stan} file in the 
+\code{stan_files} directory, "normal" or "binom" at the moment. If you 
+pass a compiled model to}
+
+\item{stanmodel}{stanmodel: the output from \code{\link[rstan]{stan_model}}.
+Must follow the naming convention in the vignette.}
 
 \item{wf_mean}{Numeric Vector: vector of means of weighting functions. May be
 computed automatically in the future.}

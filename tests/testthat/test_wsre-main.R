@@ -1,7 +1,7 @@
 context("wsre method")
 
 # defaults are actually fine for testing? 
-wsre_obj <- wsre(wf_mean = c(1), n_mcmc_samples = 500)
+wsre_obj <- wsre(model_name = "normal", wf_mean = c(1), n_mcmc_samples = 500)
 test_point <- c(0.1, 0.5)
 
 test_that("wsre returns object of correct type:", {
@@ -33,3 +33,46 @@ test_that(
     )
   }
 )
+
+test_that("wrong model_name leads to error", {
+  expect_error(
+    object = wsre(model_name = "garbage"),
+    regexp = "I don't know a model with that model_name"
+  )
+})
+
+
+# next test is really slow, but useful?
+# I have no way of checking that the correct thing gets added to the target
+# (in general - so this is not a good guide)
+test_that("Passing in stanmodel, with correct data block, leads to wsre_obj", {
+  # this test takes a long time, but I want it to run everywhere that isn't
+  # my system, leaving the burden on me to uncomment it from time to time, 
+  # before pushing to CI.
+  skip_if(
+    condition = system2("whoami", stdout = TRUE) == "amanderson",
+    message = "Locally skipping long test that involves Stan compiler - check me locally from time to time."
+  )
+  test_stanmodel <- rstan::stan_model(
+    model_code = 
+    "data {
+      real wf_mean;
+      real <lower = 0> wf_sd;
+      real wf_exponent;
+    }
+    parameters {
+      real x;
+    }
+    model {
+      x ~ normal(0, 1);
+      target += wf_exponent * normal_lpdf(x | wf_mean, wf_sd);
+    }"
+  )
+  test_res <- wsre(stanmodel = test_stanmodel)
+
+  expect_s3_class(
+    object = test_res,
+    class = "wsre"
+  )
+})
+

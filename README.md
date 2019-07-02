@@ -28,6 +28,8 @@ and `devtools::document()` has to be run __before__ `devtools::load_all()`.
 
 ## Development notes to self
 
+At the moment, upgrading `StanHeaders` leads to a compilation error, stick with     2.18.1. (__NOT__: 2.18.1-10).
+
 There are a few different tasks I want to accomplish here
 
 - All the ways to estimate weighted unnormalised density estimates

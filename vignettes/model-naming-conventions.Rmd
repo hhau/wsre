@@ -1,0 +1,23 @@
+---
+title: "model-naming-conventions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{model-naming-conventions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = NA,
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(wsre)
+library(rstan)
+```
+
+The `stanmodel` arugment of `wsre::wsre()` expects a `stanmodel` from `rstan::stan_model()` that follows a certain naming convention.

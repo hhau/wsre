@@ -22,3 +22,7 @@ Numeric Vector: self ratio values
 Evaluate a weighted self ratio estimate at a set of numerator and denominator
 points
 }
+\details{
+Note that \code{\link[base]{expand.grid}} gets called on \code{x_nu} and 
+\code{x_de}.
+}

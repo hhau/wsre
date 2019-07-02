@@ -3,6 +3,9 @@
 #' Evaluate a weighted self ratio estimate at a set of numerator and denominator
 #' points
 #' 
+#' Note that \code{\link[base]{expand.grid}} gets called on \code{x_nu} and 
+#' \code{x_de}.
+#' 
 #' @param wsre_obj \code{wsre} object: From \code{\link{wsre}}
 #' @param x_nu Numeric Vector: vector of numerator locations to evaluate the
 #' estimate at.

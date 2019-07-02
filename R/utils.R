@@ -24,3 +24,8 @@ NULL
 .is_numerically_okay <- function(x) {
   !(is.infinite(x) | is.nan(x) | is.na(x) | abs(x) < .Machine$double.eps)
 }
+
+.named_model <- function(name) {
+  name = match.arg(arg = name, choices = c("normal", "binom"))
+  .stan_models[[name]]
+}

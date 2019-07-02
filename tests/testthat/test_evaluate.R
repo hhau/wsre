@@ -1,6 +1,6 @@
 context("eval method")
 
-wsre_obj <- wsre(wf_mean = c(1), n_mcmc_samples = 500)
+wsre_obj <- wsre(model_name = "normal", wf_mean = c(1), n_mcmc_samples = 500)
 good_test_point <- c(0.1, 0.5)
 bad_test_point  <- c(-880, -87123) # substantially too far away.
 combined_point <- rbind(good_test_point, bad_test_point) 
