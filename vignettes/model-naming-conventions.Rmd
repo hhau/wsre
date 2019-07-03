@@ -21,27 +21,24 @@ library(rstan)
 
 # What does `wsre` do?
 
-We are interested in estimating a _self-density ratio_ of a density function $\text{p}(x)$, i.e.&nbsp;$\text{r}(\text{x}_{\text{nu}}, \text{x}_{\text{de}})$:
+We are interested in estimating a _self-density ratio_ of a density function $\text{p}(x)$, i.e.&nbsp;$\text{r}(x_{\text{nu}}, x_{\text{de}})$:
 \[
-  \text{r}(\text{x}_{\text{nu}}, \text{x}_{\text{de}})
+  \text{r}(x_{\text{nu}}, x_{\text{de}})
   =
   \frac {
-    \text{p}(\text{x}_{\text{nu}})
+    \text{p}(x_{\text{nu}})
   } {
-    \text{p}(\text{x}_{\text{de}})
+    \text{p}(x_{\text{de}})
   }.
 \]
-
-In practice we usually do no know $\text{p}(x)$, however we do know some joint distribution $\text{p}(x, z)$ that has $\text{p}(x)$ as a marginal.
-We are also interested in accurately (with minimal relative error) $\text{r}(\text{x}_{\text{nu}}, \text{x}_{\text{de}})$ for values of $\text{x}_{\text{nu}}, \text{x}_{\text{de}}$ that are improbable under $\text{p}(x)$. 
-
-`wsre` enables the accurate estimation of $\text{r}(\text{x}_{\text{nu}}, \text{x}_{\text{de}})$, by augmenting $\text{p}(x, z)$ with various weighting functions (hence `wsre`: _weighted self-density ratio estimation_) and carefully accounting for the impact of this weighting. 
-
+In practice we do not know $\text{p}(x)$, however we do know some joint distribution $\text{p}(x, z)$ that has $\text{p}(x)$ as a marginal.
+We are also interested in accurately evaluating (with minimal _relative_ error) $\text{r}(x_{\text{nu}}, x_{\text{de}})$ for values of $x_{\text{nu}}, x_{\text{de}}$ that are improbable under $\text{p}(x)$. 
+`wsre` enables the accurate estimation of $\text{r}(x_{\text{nu}}, x_{\text{de}})$, by augmenting $\text{p}(x, z)$ with various weighting functions (hence `wsre`: _weighted self-density ratio estimation_) and carefully accounting for the impact of this weighting. 
 To do this, `wsre` expects a `Stan` model that specifies $\text{p}(x, z)$ in a specific way.
 
 # `Stan` model naming convention
 
-The `stanmodel` arugment of `wsre::wsre()` expects a `stanmodel` from `rstan::stan_model()` that follows a certain naming convention.
+The `stanmodel` arugment of `wsre()` expects a `stanmodel` from `rstan::stan_model()` that follows a certain naming convention.
 Consider the following code (from one of the tests):
 ```{r test_demo, eval = FALSE}
 good_stanmodel <- stan_model(
@@ -62,13 +59,13 @@ good_stanmodel <- stan_model(
   )
 wsre_res <- wsre(stanmodel = good_stanmodel)
 ```
-There are three critical parts to this code.
+There are three critical parts to this `Stan` model:
 
-1. The `data` block, which must include `wf_mean`, `wf_sd`, `wf_exponent`, and `target_dimension`, though the last of these is technically unused at the moment.
+1. the `data` block, which must include `wf_mean`, `wf_sd`, `wf_exponent`, and `target_dimension`, though the last of these is technically unused at the moment,
 
-1. The `parameters` block, which must contain `real x`, which is the component of $\text{p}(x, z)$ of interest. 
+1. the `parameters` block, which must contain `real x`, which is the component of $\text{p}(x, z)$ of interest,
 
-1. The line in the model block: 
+1. the line in the model block: 
     ```{stan wsre_mod_line, output.var = "garb", eval = FALSE}
     target += wf_exponent * normal_lpdf(x | wf_mean, wf_sd);
     ```
@@ -122,13 +119,13 @@ of means for the weighting functions, as well as the common[^common] standard de
 wsre_est <- wsre(
   stanmodel = good_stanmodel, # from earlier
   wf_mean = seq(from = -24, to = 24, by = 0.5), # vector of means
-  wf_pars = list( # named list of other pars \
+  wf_pars = list( # named list of other parameters
     wf_sd = 2.5,
     wf_exponent = 1,
     target_dimension = 1
   ),
   n_mcmc_samples = 5000,
-  flog_threshold = futile.logger::TRACE # see what's going on - set back to INFO for fewer messages
+  flog_threshold = futile.logger::TRACE # set back to INFO for fewer messages
 )
 ```
 
@@ -137,12 +134,12 @@ The `wsre_est` object is a collection of function closures that can be written t
 Evaluating `wsre_est` at a new point is done by
 ```{r eval_demo, eval = FALSE}
 wsre_new_point <- evaluate(
-  wsre_obj,
+  wsre_est,
   x_nu = 3.6,
   x_de = 4.7
 )
 ```
-where `x_nu` and `x_de` can be uneven length vectors, which will be passed to
+where `x_nu` and `x_de` can be unequal length vectors, which will be passed to
 `expand.grid`[^expand] and return a vector of length `length(x_nu) * length(x_de)`. 
 
 
