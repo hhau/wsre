@@ -50,18 +50,20 @@ test_that("Passing in stanmodel, with correct data block, leads to wsre_obj", {
   # my system, leaving the burden on me to uncomment it from time to time, 
   # before pushing to CI.
   skip_if(
-    condition = system2("whoami", stdout = TRUE) == "amanderson",
-    message = "Locally skipping long test that involves Stan compiler - check me locally from time to time."
+    # condition = system2("whoami", stdout = TRUE) == "amanderson",
+    condition = runif(n = 1) < 0.95, # skip 95% of the time
+    message = "Locally skipping long test that involves Stan compiler"
   )
   test_stanmodel <- rstan::stan_model(
     model_code = 
     "data {
       real wf_mean;
       real <lower = 0> wf_sd;
-      real wf_exponent;
+      real <lower = 0> wf_exponent;
+      int <lower = 1> target_dimension;
     }
     parameters {
-      real x;
+      real x [target_dimension];
     }
     model {
       x ~ normal(0, 1);
