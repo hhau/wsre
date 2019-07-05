@@ -26,6 +26,6 @@ NULL
 }
 
 .named_model <- function(name) {
-  name = match.arg(arg = name, choices = c("normal", "binom"))
-  .stan_models[[name]]
+  a_name <- match.arg(arg = name, choices = c("normal", "binom"))
+  .stan_models[[a_name]]
 }
