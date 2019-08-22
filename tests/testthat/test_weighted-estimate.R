@@ -4,9 +4,11 @@ futile.logger::flog.threshold(futile.logger::TRACE)
 
 bandwidth <- bw.SJ(rnorm(800))
 
+dim <- 2
+
 weighted_est <- weighted_ratio_estimate(
   stanmodel = wsre:::.stan_models[["normal"]],
-  wf_pars = list(wf_mean = 3, wf_sd = 2, wf_exponent = 1, target_dimension = 1),
+  wf_pars = list(wf_mean = as.array(rep(3, times = dim)), wf_sd = as.array(rep(2, times = dim)), wf_exponent = 1, target_dimension = dim),
   n_mcmc_samples = 800,
   stan_control_params = list(
     adapt_delta = 0.95,

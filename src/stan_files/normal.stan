@@ -4,8 +4,8 @@ data {
  
   // weighting function params
   // wf := weighting_function
-  real wf_mean;
-  real <lower = 0> wf_sd;
+  real wf_mean [target_dimension];
+  real <lower = 0> wf_sd [target_dimension];
   real <lower = 0> wf_exponent;
 }
 

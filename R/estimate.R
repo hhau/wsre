@@ -8,7 +8,7 @@
 #' pass a compiled model to 
 #' @param stanmodel stanmodel: the output from \code{\link[rstan]{stan_model}}.
 #' Must follow the naming convention in the vignette.
-#' @param wf_mean Numeric Vector: vector of means of weighting functions. May be
+#' @param wf_mean List: list of d-vectors of means of weighting functions. May be
 #' computed automatically in the future.
 #' @param wf_pars Named List: see default for structure; other parameters for
 #' the weighting function 
@@ -26,8 +26,8 @@
 wsre <- function(
   model_name = c("normal", "binom"),
   stanmodel = .named_model(model_name),
-  wf_mean = c(-3, 3, 5),
-  wf_pars = list(wf_sd = 2, wf_exponent = 1, target_dimension = 1),
+  wf_mean = list(-3, 3, 5),
+  wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 5000,
   stan_control_params = list(adapt_delta = 0.95, max_treedepth = 12),
   flog_threshold = futile.logger::INFO
@@ -45,7 +45,13 @@ wsre <- function(
 
   # do the naive estimate first, might need it for later calculations
   futile.logger::flog.trace("Obtaining the Naive estimate")
-  naive_wf_pars <- .extend_list(wf_pars, list(wf_mean = 0, wf_exponent = 0))
+  naive_wf_pars <- .extend_list(
+    wf_pars, 
+    list(
+      wf_mean = as.array(rep(0, times = wf_pars$target_dimension)),
+      wf_exponent = 0
+    )
+  )
   naive_estimate <- naive_ratio_estimate(
     stanmodel = stanmodel,
     wf_pars = naive_wf_pars,
@@ -58,7 +64,7 @@ wsre <- function(
   # mclapply for cheap speed? parallel logging and dll loading is hard
   wsre_estimates <- lapply(wf_mean, function(a_mean) {
     futile.logger::flog.trace(sprintf("Starting mean: %.2f", a_mean))
-    wf_pars <- .extend_list(wf_pars, list(wf_mean = a_mean))
+    wf_pars <- .extend_list(wf_pars, list(wf_mean = as.array(c(a_mean))))
     sub_obj <- weighted_ratio_estimate(
       stanmodel = stanmodel,
       wf_pars = wf_pars,
@@ -106,8 +112,9 @@ naive_ratio_estimate <- function(
     control = stan_control_params
   )
 
+  dim <- length(wf_pars$wf_mean)
   # is now a numeric vector
-  x_samples <- as.array(stanfit, pars = "x") %>% as.vector()
+  x_samples <- as.array(stanfit, pars = "x")[, 1, 1 : dim] 
   bandwidth <- stats::bw.SJ(x_samples)
   
   kde_est <- function(x) {

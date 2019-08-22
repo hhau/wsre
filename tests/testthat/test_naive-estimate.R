@@ -2,9 +2,16 @@ context("naive_ratio_estimate method")
 
 futile.logger::flog.threshold(futile.logger::TRACE)
 
+dim <- 2
+
 naive_est <- naive_ratio_estimate(
   stanmodel = wsre:::.stan_models[["normal"]],
-  wf_pars = list(wf_mean = 0, wf_sd = 2, wf_exponent = 0, target_dimension = 1),
+  wf_pars = list(
+    wf_mean = as.array(rep(0, times = dim)),
+    wf_sd = as.array(rep(2, times = dim)),
+    wf_exponent = 0,
+    target_dimension = dim
+  ),
   n_mcmc_samples = 800,
   stan_control_params = list(
     adapt_delta = 0.95,

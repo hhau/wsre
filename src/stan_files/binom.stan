@@ -1,14 +1,13 @@
 data {
   // actual data - zilch
 
+  int <lower = 0> target_dimension;
+
   // weighting function arguments
-  real wf_mean;
-  real <lower = 0> wf_sd;
+  real wf_mean [target_dimension];
+  real <lower = 0> wf_sd [target_dimension];
   real <lower = 0> wf_exponent;
 
-  // in this example this will be zero, but needed for consistency with other
-  // model signatures
-  int <lower = 0> target_dimension;
 }
 
 parameters {
@@ -16,7 +15,7 @@ parameters {
   real <lower = 0> N_x;
 
   // thing we actually care about - has to be called `x`
-  real <lower = 0, upper = N_x> x;
+  real <lower = 0, upper = N_x> x [target_dimension];
 }
 
 model {
@@ -25,12 +24,14 @@ model {
   N_x ~ lognormal(4.93, 0.012);
 
   // continuous binomial
-  target += 
-    lgamma(N_x - 1) - 
-    (lgamma(x - 1) + lgamma(N_x - x - 1)) + 
-    lmultiply(x, P_x) + 
-    (N_x - x) * log1m(P_x); // ideally combine with lmultiply, but not possible
-
+  for (dim in 1:target_dimension) {
+    target += 
+    lgamma(N_x - 1.0) - 
+    (lgamma(x[dim] - 1.0) + lgamma(N_x - x[dim] - 1.0)) + 
+    lmultiply(x[dim], P_x) + 
+    (N_x - x[dim]) * log1m(P_x); // ideally combine with lmultiply, but not possible  
+  }
+  
   // weighting function - normal again
   target += wf_exponent * normal_lpdf(x | wf_mean, wf_sd);
 }

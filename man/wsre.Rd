@@ -5,7 +5,7 @@
 \title{Weighted Self Ratio Estimation}
 \usage{
 wsre(model_name = c("normal", "binom"),
-  stanmodel = .named_model(model_name), wf_mean = c(-3, 3, 5),
+  stanmodel = .named_model(model_name), wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = 2, wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 5000, stan_control_params = list(adapt_delta = 0.95,
   max_treedepth = 12), flog_threshold = futile.logger::INFO)
@@ -18,7 +18,7 @@ pass a compiled model to}
 \item{stanmodel}{stanmodel: the output from \code{\link[rstan]{stan_model}}.
 Must follow the naming convention in the vignette.}
 
-\item{wf_mean}{Numeric Vector: vector of means of weighting functions. May be
+\item{wf_mean}{List: list of d-vectors of means of weighting functions. May be
 computed automatically in the future.}
 
 \item{wf_pars}{Named List: see default for structure; other parameters for

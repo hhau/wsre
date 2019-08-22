@@ -22,7 +22,7 @@ NumericVector weighting_function(
 
 }
 
-// This is one of those rare cases where the C++ version is only slightly faster
+// This is a rare case where the C++ version is _only slightly_ faster
 // as it can (mostly) avoid garbage collection.
 
 // [[Rcpp::export]]
