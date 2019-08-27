@@ -9,20 +9,20 @@ evaluate(wsre_obj, x_nu, x_de)
 \arguments{
 \item{wsre_obj}{\code{wsre} object: From \code{\link{wsre}}}
 
-\item{x_nu}{Numeric Vector: vector of numerator locations to evaluate the
-estimate at.}
+\item{x_nu}{Numeric Vector: vector of length one or more; numerator 
+location to evaluate the estimate at.}
 
-\item{x_de}{Numeric Vector: vector of denominator locations to evaluate the
-estimate at.}
+\item{x_de}{Numeric Vector: vector of length one or more; denominator 
+location to evaluate the estimate at.}
 }
 \value{
-Numeric Vector: self ratio values
+Double: self ratio value
 }
 \description{
 Evaluate a weighted self ratio estimate at a set of numerator and denominator
 points
 }
 \details{
-Note that \code{\link[base]{expand.grid}} gets called on \code{x_nu} and 
-\code{x_de}.
+NOTE: This differs from the earlier version, everything is now pointwise due
+to the requirement to `work` in N-dimensions.
 }

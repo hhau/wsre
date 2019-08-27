@@ -6,47 +6,60 @@
 
 using namespace Rcpp;
 
-// weighting_function
-NumericVector weighting_function(NumericVector x, double wf_mean, double wf_sd, double wf_exponent, bool log_scale);
-RcppExport SEXP _wsre_weighting_function(SEXP xSEXP, SEXP wf_meanSEXP, SEXP wf_sdSEXP, SEXP wf_exponentSEXP, SEXP log_scaleSEXP) {
+// kernel_func_nd
+double kernel_func_nd(NumericVector x_val, NumericVector x_sample, NumericVector bw_vec);
+RcppExport SEXP _wsre_kernel_func_nd(SEXP x_valSEXP, SEXP x_sampleSEXP, SEXP bw_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type wf_mean(wf_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type wf_sd(wf_sdSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_val(x_valSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_sample(x_sampleSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bw_vec(bw_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(kernel_func_nd(x_val, x_sample, bw_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// kde_func_nd
+double kde_func_nd(NumericVector x_val, NumericMatrix x_sample_mat, NumericVector bw_vec);
+RcppExport SEXP _wsre_kde_func_nd(SEXP x_valSEXP, SEXP x_sample_matSEXP, SEXP bw_vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x_val(x_valSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type x_sample_mat(x_sample_matSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type bw_vec(bw_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(kde_func_nd(x_val, x_sample_mat, bw_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// pointwise_weighting_function_nd
+double pointwise_weighting_function_nd(NumericVector x_sample, NumericVector wf_mean, NumericVector wf_sd, double wf_exponent, bool log_scale);
+RcppExport SEXP _wsre_pointwise_weighting_function_nd(SEXP x_sampleSEXP, SEXP wf_meanSEXP, SEXP wf_sdSEXP, SEXP wf_exponentSEXP, SEXP log_scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type x_sample(x_sampleSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type wf_mean(wf_meanSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type wf_sd(wf_sdSEXP);
     Rcpp::traits::input_parameter< double >::type wf_exponent(wf_exponentSEXP);
     Rcpp::traits::input_parameter< bool >::type log_scale(log_scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(weighting_function(x, wf_mean, wf_sd, wf_exponent, log_scale));
+    rcpp_result_gen = Rcpp::wrap(pointwise_weighting_function_nd(x_sample, wf_mean, wf_sd, wf_exponent, log_scale));
     return rcpp_result_gen;
 END_RCPP
 }
-// gauss_kde
-NumericVector gauss_kde(NumericVector x, NumericVector x_samples, double bandwidth);
-RcppExport SEXP _wsre_gauss_kde(SEXP xSEXP, SEXP x_samplesSEXP, SEXP bandwidthSEXP) {
+// weight_gauss_kde_jones_nd
+double weight_gauss_kde_jones_nd(NumericVector x_val, NumericMatrix weighted_samples, NumericVector wf_mean, NumericVector wf_sd, double wf_exponent, NumericVector bw_vec);
+RcppExport SEXP _wsre_weight_gauss_kde_jones_nd(SEXP x_valSEXP, SEXP weighted_samplesSEXP, SEXP wf_meanSEXP, SEXP wf_sdSEXP, SEXP wf_exponentSEXP, SEXP bw_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type x_samples(x_samplesSEXP);
-    Rcpp::traits::input_parameter< double >::type bandwidth(bandwidthSEXP);
-    rcpp_result_gen = Rcpp::wrap(gauss_kde(x, x_samples, bandwidth));
-    return rcpp_result_gen;
-END_RCPP
-}
-// weight_gauss_kde_jones
-NumericVector weight_gauss_kde_jones(NumericVector x, NumericVector weighted_samples, double wf_mean, double wf_sd, double wf_exponent, double bandwidth);
-RcppExport SEXP _wsre_weight_gauss_kde_jones(SEXP xSEXP, SEXP weighted_samplesSEXP, SEXP wf_meanSEXP, SEXP wf_sdSEXP, SEXP wf_exponentSEXP, SEXP bandwidthSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type weighted_samples(weighted_samplesSEXP);
-    Rcpp::traits::input_parameter< double >::type wf_mean(wf_meanSEXP);
-    Rcpp::traits::input_parameter< double >::type wf_sd(wf_sdSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type x_val(x_valSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type weighted_samples(weighted_samplesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type wf_mean(wf_meanSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type wf_sd(wf_sdSEXP);
     Rcpp::traits::input_parameter< double >::type wf_exponent(wf_exponentSEXP);
-    Rcpp::traits::input_parameter< double >::type bandwidth(bandwidthSEXP);
-    rcpp_result_gen = Rcpp::wrap(weight_gauss_kde_jones(x, weighted_samples, wf_mean, wf_sd, wf_exponent, bandwidth));
+    Rcpp::traits::input_parameter< NumericVector >::type bw_vec(bw_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(weight_gauss_kde_jones_nd(x_val, weighted_samples, wf_mean, wf_sd, wf_exponent, bw_vec));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -55,9 +68,10 @@ RcppExport SEXP _rcpp_module_boot_stan_fit4binom_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4normal_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_wsre_weighting_function", (DL_FUNC) &_wsre_weighting_function, 5},
-    {"_wsre_gauss_kde", (DL_FUNC) &_wsre_gauss_kde, 3},
-    {"_wsre_weight_gauss_kde_jones", (DL_FUNC) &_wsre_weight_gauss_kde_jones, 6},
+    {"_wsre_kernel_func_nd", (DL_FUNC) &_wsre_kernel_func_nd, 3},
+    {"_wsre_kde_func_nd", (DL_FUNC) &_wsre_kde_func_nd, 3},
+    {"_wsre_pointwise_weighting_function_nd", (DL_FUNC) &_wsre_pointwise_weighting_function_nd, 5},
+    {"_wsre_weight_gauss_kde_jones_nd", (DL_FUNC) &_wsre_weight_gauss_kde_jones_nd, 6},
     {"_rcpp_module_boot_stan_fit4binom_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4binom_mod, 0},
     {"_rcpp_module_boot_stan_fit4normal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4normal_mod, 0},
     {NULL, NULL, 0}

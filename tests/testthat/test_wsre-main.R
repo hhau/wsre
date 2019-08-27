@@ -57,10 +57,10 @@ test_that("Passing in stanmodel, with correct data block, leads to wsre_obj", {
   test_stanmodel <- rstan::stan_model(
     model_code = 
     "data {
-      real wf_mean;
-      real <lower = 0> wf_sd;
-      real <lower = 0> wf_exponent;
       int <lower = 1> target_dimension;
+      real wf_mean [target_dimension];
+      real <lower = 0> wf_sd [target_dimension];
+      real <lower = 0> wf_exponent;
     }
     parameters {
       real x [target_dimension];

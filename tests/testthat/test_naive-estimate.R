@@ -27,12 +27,16 @@ test_that("That the function succeeds and returns the expected class", {
 })
 
 test_that("The estimates are numerically feasible", {
-  test_point <- c(0.2, 1.2) # should always be fine this close to the mean w/ 800 
+  test_x_nu <- c(0.2, 0.2) 
+  test_x_de <- c(1.2, 1.2)
   test_ratio <- naive_est$ratio(
-    test_point[1],
-    test_point[2]
+    test_x_nu,
+    test_x_de
   )
   expect_false(
     any(is.na(test_ratio), is.nan(test_ratio), is.infinite(test_ratio))
+  )
+  expect_true(
+    test_ratio > 1
   )
 })

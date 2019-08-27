@@ -6,9 +6,10 @@
 \usage{
 wsre(model_name = c("normal", "binom"),
   stanmodel = .named_model(model_name), wf_mean = list(-3, 3, 5),
-  wf_pars = list(wf_sd = 2, wf_exponent = 1, target_dimension = 1),
-  n_mcmc_samples = 5000, stan_control_params = list(adapt_delta = 0.95,
-  max_treedepth = 12), flog_threshold = futile.logger::INFO)
+  wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1,
+  target_dimension = 1), n_mcmc_samples = 5000,
+  stan_control_params = list(adapt_delta = 0.95, max_treedepth = 12),
+  flog_threshold = futile.logger::INFO)
 }
 \arguments{
 \item{model_name}{String: Can the name of a \code{.stan} file in the 
@@ -19,13 +20,15 @@ pass a compiled model to}
 Must follow the naming convention in the vignette.}
 
 \item{wf_mean}{List: list of d-vectors of means of weighting functions. May be
-computed automatically in the future.}
+computed automatically in the future. Sub vectors, i.e. elements of the list,
+must be arrays.}
 
 \item{wf_pars}{Named List: see default for structure; other parameters for
-the weighting function}
+the weighting function. Must have wf_sd as an array, even if univariate.
+Stan will through array/vector type errors if you get this wrong.}
 
 \item{n_mcmc_samples}{Integer: number of MCMC samples to draw from each of 
-the targets.}
+the targets, after a fixed 500 iteration warmup.}
 
 \item{stan_control_params}{Named List: see \code{control} section of
 \code{\link[rstan]{stan}}.}

@@ -9,11 +9,13 @@
 #' @param stanmodel stanmodel: the output from \code{\link[rstan]{stan_model}}.
 #' Must follow the naming convention in the vignette.
 #' @param wf_mean List: list of d-vectors of means of weighting functions. May be
-#' computed automatically in the future.
+#' computed automatically in the future. Sub vectors, i.e. elements of the list,
+#' must be arrays.
 #' @param wf_pars Named List: see default for structure; other parameters for
-#' the weighting function 
+#' the weighting function. Must have wf_sd as an array, even if univariate.
+#' Stan will through array/vector type errors if you get this wrong.
 #' @param n_mcmc_samples Integer: number of MCMC samples to draw from each of 
-#' the targets.
+#' the targets, after a fixed 500 iteration warmup.
 #' @param stan_control_params Named List: see \code{control} section of
 #' \code{\link[rstan]{stan}}.
 #' @param flog_threshold Special: See 
@@ -69,8 +71,7 @@ wsre <- function(
       stanmodel = stanmodel,
       wf_pars = wf_pars,
       n_mcmc_samples = n_mcmc_samples,
-      stan_control_params = stan_control_params,
-      bandwidth = naive_estimate$naive_bandwidth
+      stan_control_params = stan_control_params
     )
     return(sub_obj)
   })
@@ -113,12 +114,18 @@ naive_ratio_estimate <- function(
   )
 
   dim <- length(wf_pars$wf_mean)
-  # is now a numeric vector
-  x_samples <- as.array(stanfit, pars = "x")[, 1, 1 : dim] 
-  bandwidth <- stats::bw.SJ(x_samples)
+  # the first `1` drops the chain dim, but the latter vector should keep the 
+  # result in an [n_mcmc_samples, dim] array? No, need to mess around for 
+  # consistency. Should work as written, the as.array is the generic for the
+  # stanfit object.
+  x_samples <- as.array(stanfit, pars = "x")[, 1, ] %>% 
+    as.vector() %>% 
+    array(dim = c(n_mcmc_samples, dim))
+  
+  bandwidth_vec <- apply(x_samples, 2, stats::bw.SJ)
   
   kde_est <- function(x) {
-    gauss_kde(x = x, x_samples = x_samples, bandwidth = bandwidth)
+    kde_func_nd(x_val = x, x_sample_mat = x_samples, bw_vec = bandwidth_vec)
   }
 
   ratio <- function(x_nu, x_de) {
@@ -133,7 +140,7 @@ naive_ratio_estimate <- function(
     wf_pars = wf_pars,
     ratio = ratio,
     weighting = weighting,
-    naive_bandwidth = bandwidth
+    naive_bandwidth = bandwidth_vec
   )
 
   class(ratio_obj) <- "wsre_sub"
@@ -145,8 +152,7 @@ weighted_ratio_estimate <- function(
   stanmodel,
   wf_pars,
   n_mcmc_samples,
-  stan_control_params,
-  bandwidth
+  stan_control_params
 ) {
 
   stanfit <- rstan::sampling(
@@ -159,22 +165,25 @@ weighted_ratio_estimate <- function(
     control = stan_control_params
   )
 
-  # is now a numeric vector
-  x_samples <- as.array(stanfit, pars = "x") %>% as.vector()
-  # bandwidth <- stats::bw.SJ(x_samples)
+  dim <- length(wf_pars$wf_mean)
+  x_samples <- as.array(stanfit, pars = "x")[, 1, ] %>% 
+    as.vector() %>% 
+    array(dim = c(n_mcmc_samples, dim))
+  
+  bandwidth_vec <- apply(x_samples, 2, stats::bw.SJ)
   
   direct_kde_est <- function(x) {
-    gauss_kde(x = x, x_samples = x_samples, bandwidth = bandwidth)
+    kde_func_nd(x_val = x, x_sample_mat = x_samples, bw_vec = bandwidth_vec)
   }
 
   weighted_kde_est <- function(x) {
-    with(wf_pars, weight_gauss_kde_jones(
-      x = x,
+    with(wf_pars, weight_gauss_kde_jones_nd(
+      x_val = x,
       weighted_samples = x_samples,
       wf_mean = wf_mean,
       wf_sd = wf_sd,
-      wf_exponent = wf_exponent, # TODO: this bad naming, needs fixing
-      bandwidth = bandwidth
+      wf_exponent = wf_exponent,
+      bw_vec = bandwidth_vec
     ))
   }
 
