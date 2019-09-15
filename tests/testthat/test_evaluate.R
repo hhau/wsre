@@ -56,7 +56,3 @@ test_that("2D evaluation works, feasible, sensible", {
     good_2d_result > 1 # (1, 1) should have a higher density value that (2, 2)
   )
 })
-
-# farkkkkkkkkkkkkk
-true <- prod(dnorm(x = c(1, 1), mean = 0, sd = 1)) /
-  prod(dnorm(x = c(2, 2), mean = 0, sd = 1))

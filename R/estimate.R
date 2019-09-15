@@ -31,7 +31,7 @@ wsre <- function(
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 5000,
-  stan_control_params = list(adapt_delta = 0.95, max_treedepth = 12),
+  stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO
 ) {
 
@@ -64,7 +64,7 @@ wsre <- function(
   # at the moment I'm just going to assume the wf_mean's are sensible,
   # I could figure this out automatically, but not for right now
   # mclapply for cheap speed? parallel logging and dll loading is hard
-  wsre_estimates <- lapply(wf_mean, function(a_mean) {
+  wsre_estimates <- parallel::mclapply(wf_mean, mc.cores = 6, function(a_mean) {
     futile.logger::flog.trace(sprintf("Starting mean: %.2f", a_mean))
     wf_pars <- .extend_list(wf_pars, list(wf_mean = as.array(c(a_mean))))
     sub_obj <- weighted_ratio_estimate(
@@ -106,8 +106,8 @@ naive_ratio_estimate <- function(
   stanfit <- rstan::sampling(
     stanmodel,
     data = wf_pars,
-    iter = n_mcmc_samples + 500,
-    warmup = 500,
+    iter = n_mcmc_samples + 2000,
+    warmup = 2000,
     chains = 1,
     refresh = 0,
     control = stan_control_params
@@ -158,8 +158,8 @@ weighted_ratio_estimate <- function(
   stanfit <- rstan::sampling(
     object = stanmodel,
     data = wf_pars,
-    iter = n_mcmc_samples + 500,
-    warmup = 500,
+    iter = n_mcmc_samples + 2000,
+    warmup = 2000,
     chains = 1,
     refresh = 0,
     control = stan_control_params
