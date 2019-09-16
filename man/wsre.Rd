@@ -8,7 +8,7 @@ wsre(model_name = c("normal", "binom"),
   stanmodel = .named_model(model_name), wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1,
   target_dimension = 1), n_mcmc_samples = 5000,
-  stan_control_params = list(adapt_delta = 0.95, max_treedepth = 12),
+  stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO)
 }
 \arguments{
