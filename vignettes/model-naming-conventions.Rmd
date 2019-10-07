@@ -139,10 +139,8 @@ wsre_new_point <- evaluate(
   x_de = 4.7
 )
 ```
-where `x_nu` and `x_de` can be unequal length vectors, which will be passed to
-`expand.grid`[^expand] and return a vector of length `length(x_nu) * length(x_de)`. 
-
+where `x_nu` and `x_de` are `target_dimension` length vector. 
+We usually only want to evaluate the self-density ratio pointwise, as we use it in a Markov-chain Monte Carlo context.
+The call to `evaluate` can be rewritten as a call to `sapply` should you wish to evaluate the self-density ratio at a set of points.
 
 [^common]: For the moment.
-
-[^expand]: Don't pass in something that could have been `expand.grid`'d, evaluation time will be unexpectedly high.
