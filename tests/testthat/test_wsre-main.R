@@ -81,8 +81,8 @@ test_that("Passing in stanmodel, with correct data block, leads to wsre_obj", {
 ## test that 2D things work?
 two_dim_wsre_obj <- wsre(
   model_name = "normal", 
-  wf_mean = list(c(1, 1)),
-  wf_pars = list(wf_sd = c(2, 2), wf_exponent = 1, target_dimension = 2),
+  wf_mean = list(array(c(1, 1))),
+  wf_pars = list(wf_sd = array(c(2, 2)), wf_exponent = 1, target_dimension = 2),
   n_mcmc_samples = 500
 )
 
@@ -92,6 +92,3 @@ test_that("2D model is sample-able", {
     class = "wsre"
   )  
 })
-
-
-test_point <- c(0.1, 0.5)
