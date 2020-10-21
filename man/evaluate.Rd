@@ -9,10 +9,10 @@ evaluate(wsre_obj, x_nu, x_de)
 \arguments{
 \item{wsre_obj}{\code{wsre} object: From \code{\link{wsre}}}
 
-\item{x_nu}{Numeric Vector: vector of length one or more; numerator 
+\item{x_nu}{Numeric Vector: vector of length one or more; numerator
 location to evaluate the estimate at.}
 
-\item{x_de}{Numeric Vector: vector of length one or more; denominator 
+\item{x_de}{Numeric Vector: vector of length one or more; denominator
 location to evaluate the estimate at.}
 }
 \value{
@@ -24,5 +24,5 @@ points
 }
 \details{
 NOTE: This differs from the earlier version, everything is now pointwise due
-to the requirement to `work` in N-dimensions.
+to the requirement to \code{work} in N-dimensions.
 }

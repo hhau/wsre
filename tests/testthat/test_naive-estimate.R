@@ -5,7 +5,7 @@ futile.logger::flog.threshold(futile.logger::TRACE)
 dim <- 2
 
 naive_est <- naive_ratio_estimate(
-  stanmodel = wsre:::.stan_models[["normal"]],
+  stanmodel = wsre:::stanmodels[["normal"]],
   wf_pars = list(
     wf_mean = as.array(rep(0, times = dim)),
     wf_sd = as.array(rep(2, times = dim)),

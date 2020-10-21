@@ -3,7 +3,7 @@ context("eval method")
 wsre_obj <- wsre(
   model_name = "normal",
   wf_mean = list(1),
-  n_mcmc_samples = 500
+  n_mcmc_samples = 2000
 )
 good_test_point <- c(x_nu = 0.1, x_de = 0.5)
 bad_test_point  <- c(x_nu = -880, x_de = -87123) # substantially too far away.
@@ -33,7 +33,7 @@ two_dim_wsre_obj <- wsre(
   model_name = "normal", 
   wf_mean = list(array(c(1, 1)), array(c(2, 2)), array(c(3, 3)), array(c(4, 4))),
   wf_pars = list(wf_sd = array(c(2, 2)), wf_exponent = 1, target_dimension = 2),
-  n_mcmc_samples = 5000#,
+  n_mcmc_samples = 2000#,
   # flog_threshold = futile.logger::TRACE
 )
 

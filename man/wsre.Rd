@@ -4,16 +4,19 @@
 \alias{wsre}
 \title{Weighted Self Ratio Estimation}
 \usage{
-wsre(model_name = c("normal", "binom"),
-  stanmodel = .named_model(model_name), wf_mean = list(-3, 3, 5),
-  wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1,
-  target_dimension = 1), n_mcmc_samples = 5000,
+wsre(
+  model_name = c("normal", "binom"),
+  stanmodel = .named_model(model_name),
+  wf_mean = list(-3, 3, 5),
+  wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
+  n_mcmc_samples = 5000,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
-  flog_threshold = futile.logger::INFO)
+  flog_threshold = futile.logger::INFO
+)
 }
 \arguments{
-\item{model_name}{String: Can the name of a \code{.stan} file in the 
-\code{stan_files} directory, "normal" or "binom" at the moment. If you 
+\item{model_name}{String: Can the name of a \code{.stan} file in the
+\code{stan_files} directory, "normal" or "binom" at the moment. If you
 pass a compiled model to}
 
 \item{stanmodel}{stanmodel: the output from \code{\link[rstan]{stan_model}}.
@@ -27,14 +30,14 @@ must be arrays.}
 the weighting function. Must have wf_sd as an array, even if univariate.
 Stan will through array/vector type errors if you get this wrong.}
 
-\item{n_mcmc_samples}{Integer: number of MCMC samples to draw from each of 
+\item{n_mcmc_samples}{Integer: number of MCMC samples to draw from each of
 the targets, after a fixed 500 iteration warmup.}
 
 \item{stan_control_params}{Named List: see \code{control} section of
 \code{\link[rstan]{stan}}.}
 
-\item{flog_threshold}{Special: See 
-\code{\link[futile.logger]{futile.logger-package}}. Set to 
+\item{flog_threshold}{Special: See
+\code{\link[futile.logger]{futile.logger-package}}. Set to
 \code{futile.logger::TRACE} to see informational messages about what is going
 on.}
 }
@@ -42,6 +45,6 @@ on.}
 A \code{wsre} object for saving / use in other functions
 }
 \description{
-Estimates the self ratio of a given model using a number of weighting 
+Estimates the self ratio of a given model using a number of weighting
 functions.
 }

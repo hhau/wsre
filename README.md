@@ -5,8 +5,8 @@ This package provides two functions:
 1. `wsre()` for estimating the self-density ratio of interest,
 2. `evaluate()` for evaluating the output of `wsre()`.
 
-See the vignette for examples on using these functions. 
-I'd also suggest looking at the tests, particularly
+See the vignette for details on using these functions. 
+I'd also suggest looking at the tests, particularly:
 
 1. `test_evaluate` for additional examples on calling `evaluate()`, particularly in 2 or more dimension,
 2. `test_wsre-main` for more simple example calls to `wsre()`.

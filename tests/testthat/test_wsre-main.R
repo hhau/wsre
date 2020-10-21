@@ -1,7 +1,8 @@
 context("wsre method")
 
 # defaults are actually fine for testing? 
-wsre_obj <- wsre(model_name = "normal", wf_mean = c(1), n_mcmc_samples = 500)
+# need more MCMC to avoid warnings
+wsre_obj <- wsre(model_name = "normal", wf_mean = c(1), n_mcmc_samples = 1000)
 test_point <- c(0.1, 0.5)
 
 test_that("wsre returns object of correct type:", {
@@ -83,7 +84,7 @@ two_dim_wsre_obj <- wsre(
   model_name = "normal", 
   wf_mean = list(array(c(1, 1))),
   wf_pars = list(wf_sd = array(c(2, 2)), wf_exponent = 1, target_dimension = 2),
-  n_mcmc_samples = 500
+  n_mcmc_samples = 1000
 )
 
 test_that("2D model is sample-able", {

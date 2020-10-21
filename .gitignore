@@ -6,7 +6,6 @@
 *.o
 *.dll
 
-
 *.Rproj.user
 *.Rhistory
 *.RData

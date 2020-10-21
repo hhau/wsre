@@ -114,7 +114,7 @@ The same three chucks are present in the `data`/`parameters`/`model` blocks resp
 # Using `wsre`
 
 Given an acceptably named `Stan` model, using `wsre` involves specifying a series
-of means for the weighting functions, as well as the common[^common] standard deviation and exponent of the weighting function.
+of means for the weighting functions, as well as the common standard deviation and exponent of the weighting function.
 ```{r wsre_est_demo, eval = FALSE}
 wsre_est <- wsre(
   stanmodel = good_stanmodel, # from earlier
@@ -143,4 +143,3 @@ where `x_nu` and `x_de` are `target_dimension` length vector.
 We usually only want to evaluate the self-density ratio pointwise, as we use it in a Markov-chain Monte Carlo context.
 The call to `evaluate` can be rewritten as a call to `sapply` should you wish to evaluate the self-density ratio at a set of points.
 
-[^common]: For the moment.
