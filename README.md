@@ -22,7 +22,6 @@ to avoid using rstantools with Rcpp code (too hard).
 
 If a `.stan` file has been modified, call:
 ```
-stanmodularise::modularise_stan_files()
 devtools::load_all()
 ```
 if not, proceed straight to:
