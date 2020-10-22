@@ -54,7 +54,7 @@ transformed parameters {
   real b_Intercept = Intercept - dot_product(means_X, b);
   // phi / SAE terms
   vector [N_1] phi_area_poverty_gap = rep_vector(0.0, N_1);
-  real x;
+  real x [target_dimension];
   vector [N] post_pred_y = mu + sigma * latent_std_normal;
 
   for (n in 1:N) {
@@ -69,7 +69,7 @@ transformed parameters {
   }
 
   phi_area_poverty_gap = phi_area_poverty_gap ./ obs_per_group;
-  x = sum(phi_area_poverty_gap .* obs_per_group) / N;
+  x[1] = sum(phi_area_poverty_gap .* obs_per_group) / N;
 }
 
 model {

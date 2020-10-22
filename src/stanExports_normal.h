@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_normal");
-    reader.add_event(24, 22, "end", "model_normal");
+    reader.add_event(21, 19, "end", "model_normal");
     return reader;
 }
 #include <stan_meta_header.hpp>
@@ -80,8 +80,8 @@ public:
             vals_i__ = context__.vals_i("target_dimension");
             pos__ = 0;
             target_dimension = vals_i__[pos__++];
-            check_greater_or_equal(function__, "target_dimension", target_dimension, 1);
-            current_statement_begin__ = 7;
+            check_greater_or_equal(function__, "target_dimension", target_dimension, 0);
+            current_statement_begin__ = 4;
             validate_non_negative_index("wf_mean", "target_dimension", target_dimension);
             context__.validate_dims("data initialization", "wf_mean", "double", context__.to_vec(target_dimension));
             wf_mean = std::vector<double>(target_dimension, double(0));
@@ -91,7 +91,7 @@ public:
             for (size_t k_0__ = 0; k_0__ < wf_mean_k_0_max__; ++k_0__) {
                 wf_mean[k_0__] = vals_r__[pos__++];
             }
-            current_statement_begin__ = 8;
+            current_statement_begin__ = 5;
             validate_non_negative_index("wf_sd", "target_dimension", target_dimension);
             context__.validate_dims("data initialization", "wf_sd", "double", context__.to_vec(target_dimension));
             wf_sd = std::vector<double>(target_dimension, double(0));
@@ -105,7 +105,7 @@ public:
             for (size_t i_0__ = 0; i_0__ < wf_sd_i_0_max__; ++i_0__) {
                 check_greater_or_equal(function__, "wf_sd[i_0__]", wf_sd[i_0__], 0);
             }
-            current_statement_begin__ = 9;
+            current_statement_begin__ = 6;
             context__.validate_dims("data initialization", "wf_exponent", "double", context__.to_vec());
             wf_exponent = double(0);
             vals_r__ = context__.vals_r("wf_exponent");
@@ -118,7 +118,7 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 13;
+            current_statement_begin__ = 10;
             validate_non_negative_index("x", "target_dimension", target_dimension);
             num_params_r__ += (1 * target_dimension);
         } catch (const std::exception& e) {
@@ -138,7 +138,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 13;
+        current_statement_begin__ = 10;
         if (!(context__.contains_r("x")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable x missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("x");
@@ -183,7 +183,7 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 13;
+            current_statement_begin__ = 10;
             std::vector<local_scalar_t__> x;
             size_t x_d_0_max__ = target_dimension;
             x.reserve(x_d_0_max__);
@@ -194,9 +194,9 @@ public:
                     x.push_back(in__.scalar_constrain());
             }
             // model body
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 15;
             lp_accum__.add(std_normal_log(x));
-            current_statement_begin__ = 21;
+            current_statement_begin__ = 18;
             lp_accum__.add((wf_exponent * normal_log(x, wf_mean, wf_sd)));
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());

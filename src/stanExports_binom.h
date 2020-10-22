@@ -33,7 +33,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_binom");
-    reader.add_event(39, 37, "end", "model_binom");
+    reader.add_event(36, 34, "end", "model_binom");
     return reader;
 }
 #include <stan_meta_header.hpp>
@@ -74,14 +74,14 @@ public:
         (void) DUMMY_VAR__;  // suppress unused var warning
         try {
             // initialize data block variables from context__
-            current_statement_begin__ = 4;
+            current_statement_begin__ = 3;
             context__.validate_dims("data initialization", "target_dimension", "int", context__.to_vec());
             target_dimension = int(0);
             vals_i__ = context__.vals_i("target_dimension");
             pos__ = 0;
             target_dimension = vals_i__[pos__++];
             check_greater_or_equal(function__, "target_dimension", target_dimension, 0);
-            current_statement_begin__ = 7;
+            current_statement_begin__ = 4;
             validate_non_negative_index("wf_mean", "target_dimension", target_dimension);
             context__.validate_dims("data initialization", "wf_mean", "double", context__.to_vec(target_dimension));
             wf_mean = std::vector<double>(target_dimension, double(0));
@@ -91,7 +91,7 @@ public:
             for (size_t k_0__ = 0; k_0__ < wf_mean_k_0_max__; ++k_0__) {
                 wf_mean[k_0__] = vals_r__[pos__++];
             }
-            current_statement_begin__ = 8;
+            current_statement_begin__ = 5;
             validate_non_negative_index("wf_sd", "target_dimension", target_dimension);
             context__.validate_dims("data initialization", "wf_sd", "double", context__.to_vec(target_dimension));
             wf_sd = std::vector<double>(target_dimension, double(0));
@@ -105,7 +105,7 @@ public:
             for (size_t i_0__ = 0; i_0__ < wf_sd_i_0_max__; ++i_0__) {
                 check_greater_or_equal(function__, "wf_sd[i_0__]", wf_sd[i_0__], 0);
             }
-            current_statement_begin__ = 9;
+            current_statement_begin__ = 6;
             context__.validate_dims("data initialization", "wf_exponent", "double", context__.to_vec());
             wf_exponent = double(0);
             vals_r__ = context__.vals_r("wf_exponent");
@@ -118,11 +118,11 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 14;
+            current_statement_begin__ = 11;
+            num_params_r__ += 1;
+            current_statement_begin__ = 12;
             num_params_r__ += 1;
             current_statement_begin__ = 15;
-            num_params_r__ += 1;
-            current_statement_begin__ = 18;
             validate_non_negative_index("x", "target_dimension", target_dimension);
             num_params_r__ += (1 * target_dimension);
         } catch (const std::exception& e) {
@@ -142,7 +142,7 @@ public:
         (void) pos__; // dummy call to supress warning
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
-        current_statement_begin__ = 14;
+        current_statement_begin__ = 11;
         if (!(context__.contains_r("P_x")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable P_x missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("P_x");
@@ -155,7 +155,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable P_x: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 15;
+        current_statement_begin__ = 12;
         if (!(context__.contains_r("N_x")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable N_x missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("N_x");
@@ -168,7 +168,7 @@ public:
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable N_x: ") + e.what()), current_statement_begin__, prog_reader__());
         }
-        current_statement_begin__ = 18;
+        current_statement_begin__ = 15;
         if (!(context__.contains_r("x")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable x missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("x");
@@ -213,21 +213,21 @@ public:
         try {
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
             // model parameters
-            current_statement_begin__ = 14;
+            current_statement_begin__ = 11;
             local_scalar_t__ P_x;
             (void) P_x;  // dummy to suppress unused var warning
             if (jacobian__)
                 P_x = in__.scalar_lub_constrain(0, 1, lp__);
             else
                 P_x = in__.scalar_lub_constrain(0, 1);
-            current_statement_begin__ = 15;
+            current_statement_begin__ = 12;
             local_scalar_t__ N_x;
             (void) N_x;  // dummy to suppress unused var warning
             if (jacobian__)
                 N_x = in__.scalar_lb_constrain(0, lp__);
             else
                 N_x = in__.scalar_lb_constrain(0);
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 15;
             std::vector<local_scalar_t__> x;
             size_t x_d_0_max__ = target_dimension;
             x.reserve(x_d_0_max__);
@@ -238,16 +238,16 @@ public:
                     x.push_back(in__.scalar_lub_constrain(0, N_x));
             }
             // model body
-            current_statement_begin__ = 23;
+            current_statement_begin__ = 20;
             lp_accum__.add(beta_log<propto__>(P_x, 864.0, 648.0));
-            current_statement_begin__ = 24;
+            current_statement_begin__ = 21;
             lp_accum__.add(lognormal_log<propto__>(N_x, 4.93, 0.012));
-            current_statement_begin__ = 27;
+            current_statement_begin__ = 24;
             for (int dim = 1; dim <= target_dimension; ++dim) {
-                current_statement_begin__ = 28;
+                current_statement_begin__ = 25;
                 lp_accum__.add((((stan::math::lgamma((N_x - 1.0)) - (stan::math::lgamma((get_base1(x, dim, "x", 1) - 1.0)) + stan::math::lgamma(((N_x - get_base1(x, dim, "x", 1)) - 1.0)))) + multiply_log(get_base1(x, dim, "x", 1), P_x)) + ((N_x - get_base1(x, dim, "x", 1)) * log1m(P_x))));
             }
-            current_statement_begin__ = 36;
+            current_statement_begin__ = 33;
             lp_accum__.add((wf_exponent * normal_log(x, wf_mean, wf_sd)));
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
