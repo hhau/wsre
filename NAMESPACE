@@ -2,6 +2,7 @@
 
 export("%>%")
 export(evaluate)
+export(null_wsre_data)
 export(wsre)
 import(Rcpp)
 import(methods)

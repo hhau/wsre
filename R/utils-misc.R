@@ -17,3 +17,16 @@
   a_name <- match.arg(arg = name, choices = c("normal", "binom"))
   stanmodels[[a_name]]
 }
+
+#' Null wsre values
+#'
+#' Null wsre parameter values, for when you want to use the included stan models
+#' but not do wsre.
+#'
+#' @export
+null_wsre_data <- list(
+  target_dimension = 0,
+  wf_mean = array(dim = 0),
+  wf_sd = array(dim = 0),
+  wf_exponent = 0
+)
