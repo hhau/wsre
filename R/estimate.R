@@ -39,7 +39,7 @@ wsre <- function(
   if (missing(model_name) & missing(stanmodel)) {
     stop("Must supply argument for one of model_name or stanmodel") 
   } else if (!missing(model_name) & missing(stanmodel)) {
-    if (!(model_name %in% names(stanmodels)) {
+    if (!(model_name %in% names(stanmodels))) {
       stop("I don't know a model with that model_name")
     }
   } 
