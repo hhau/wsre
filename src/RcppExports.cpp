@@ -66,6 +66,7 @@ END_RCPP
 
 RcppExport SEXP _rcpp_module_boot_stan_fit4binom_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4normal_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4povertygap_mod();
 
 static const R_CallMethodDef CallEntries[] = {
     {"_wsre_kernel_func_nd", (DL_FUNC) &_wsre_kernel_func_nd, 3},
@@ -74,6 +75,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_wsre_weight_gauss_kde_jones_nd", (DL_FUNC) &_wsre_weight_gauss_kde_jones_nd, 6},
     {"_rcpp_module_boot_stan_fit4binom_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4binom_mod, 0},
     {"_rcpp_module_boot_stan_fit4normal_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4normal_mod, 0},
+    {"_rcpp_module_boot_stan_fit4povertygap_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4povertygap_mod, 0},
     {NULL, NULL, 0}
 };
 

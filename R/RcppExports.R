@@ -2,18 +2,18 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 kernel_func_nd <- function(x_val, x_sample, bw_vec) {
-    .Call(`_wsre_kernel_func_nd`, x_val, x_sample, bw_vec)
+    .Call('_wsre_kernel_func_nd', PACKAGE = 'wsre', x_val, x_sample, bw_vec)
 }
 
 kde_func_nd <- function(x_val, x_sample_mat, bw_vec) {
-    .Call(`_wsre_kde_func_nd`, x_val, x_sample_mat, bw_vec)
+    .Call('_wsre_kde_func_nd', PACKAGE = 'wsre', x_val, x_sample_mat, bw_vec)
 }
 
 pointwise_weighting_function_nd <- function(x_sample, wf_mean, wf_sd, wf_exponent, log_scale) {
-    .Call(`_wsre_pointwise_weighting_function_nd`, x_sample, wf_mean, wf_sd, wf_exponent, log_scale)
+    .Call('_wsre_pointwise_weighting_function_nd', PACKAGE = 'wsre', x_sample, wf_mean, wf_sd, wf_exponent, log_scale)
 }
 
 weight_gauss_kde_jones_nd <- function(x_val, weighted_samples, wf_mean, wf_sd, wf_exponent, bw_vec) {
-    .Call(`_wsre_weight_gauss_kde_jones_nd`, x_val, weighted_samples, wf_mean, wf_sd, wf_exponent, bw_vec)
+    .Call('_wsre_weight_gauss_kde_jones_nd', PACKAGE = 'wsre', x_val, weighted_samples, wf_mean, wf_sd, wf_exponent, bw_vec)
 }
 

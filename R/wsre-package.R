@@ -4,7 +4,7 @@
 #'
 #' @docType package
 #' @name wsre-package
-#' @aliases wsre
+#' @aliases wsre-package
 #' @useDynLib wsre, .registration = TRUE
 #' @import methods
 #' @import Rcpp

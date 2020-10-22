@@ -7,31 +7,33 @@
 wsre(
   model_name = c("normal", "binom"),
   stanmodel = .named_model(model_name),
+  stan_data = list(),
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
-  n_mcmc_samples = 5000,
+  n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO
 )
 }
 \arguments{
-\item{model_name}{String: Can the name of a \code{.stan} file in the
-\code{stan_files} directory, "normal" or "binom" at the moment. If you
-pass a compiled model to}
+\item{model_name}{String: The name of a \code{.stan} file in the
+\code{inss/stan} directory, "normal" or "binom" at the moment.}
 
-\item{stanmodel}{stanmodel: the output from \code{\link[rstan]{stan_model}}.
+\item{stanmodel}{stanmodel: output from \code{\link[rstan]{stan_model}}.
 Must follow the naming convention in the vignette.}
 
-\item{wf_mean}{List: list of d-vectors of means of weighting functions. May be
-computed automatically in the future. Sub vectors, i.e. elements of the list,
-must be arrays.}
+\item{stan_data}{list: other data to pass to Stan. Not related to weighting
+function parameters.}
+
+\item{wf_mean}{List: target-dimension vectors of means of weighting
+functions.}
 
 \item{wf_pars}{Named List: see default for structure; other parameters for
 the weighting function. Must have wf_sd as an array, even if univariate.
-Stan will through array/vector type errors if you get this wrong.}
+Stan will throw array/vector type errors if you get this wrong.}
 
 \item{n_mcmc_samples}{Integer: number of MCMC samples to draw from each of
-the targets, after a fixed 500 iteration warmup.}
+the targets, after a fixed 2000 iteration warmup.}
 
 \item{stan_control_params}{Named List: see \code{control} section of
 \code{\link[rstan]{stan}}.}

@@ -15,7 +15,7 @@
 #' the weighting function. Must have wf_sd as an array, even if univariate.
 #' Stan will throw array/vector type errors if you get this wrong.
 #' @param n_mcmc_samples Integer: number of MCMC samples to draw from each of 
-#' the targets, after a fixed 500 iteration warmup.
+#' the targets, after a fixed 2000 iteration warmup.
 #' @param stan_control_params Named List: see \code{control} section of
 #' \code{\link[rstan]{stan}}.
 #' @param flog_threshold Special: See 
@@ -31,7 +31,7 @@ wsre <- function(
   stan_data = list(),
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
-  n_mcmc_samples = 5000,
+  n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO
 ) {

@@ -3,7 +3,6 @@
 \docType{package}
 \name{wsre-package}
 \alias{wsre-package}
-\alias{wsre}
 \title{The 'wsre' package.}
 \description{
 Weighted Self-Density Ratio estimation
