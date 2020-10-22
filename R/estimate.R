@@ -3,17 +3,17 @@
 #' Estimates the self ratio of a given model using a number of weighting 
 #' functions.
 #'
-#' @param model_name String: Can the name of a \code{.stan} file in the 
-#' \code{stan_files} directory, "normal" or "binom" at the moment. If you 
-#' pass a compiled model to 
-#' @param stanmodel stanmodel: the output from \code{\link[rstan]{stan_model}}.
+#' @param model_name String: The name of a \code{.stan} file in the 
+#' \code{inss/stan} directory, "normal" or "binom" at the moment. 
+#' @param stanmodel stanmodel: output from \code{\link[rstan]{stan_model}}.
 #' Must follow the naming convention in the vignette.
-#' @param wf_mean List: list of d-vectors of means of weighting functions. May be
-#' computed automatically in the future. Sub vectors, i.e. elements of the list,
-#' must be arrays.
+#' @param stan_data list: other data to pass to Stan. Not related to weighting
+#' function parameters.
+#' @param wf_mean List: target-dimension vectors of means of weighting 
+#' functions. 
 #' @param wf_pars Named List: see default for structure; other parameters for
 #' the weighting function. Must have wf_sd as an array, even if univariate.
-#' Stan will through array/vector type errors if you get this wrong.
+#' Stan will throw array/vector type errors if you get this wrong.
 #' @param n_mcmc_samples Integer: number of MCMC samples to draw from each of 
 #' the targets, after a fixed 500 iteration warmup.
 #' @param stan_control_params Named List: see \code{control} section of
@@ -28,6 +28,7 @@
 wsre <- function(
   model_name = c("normal", "binom"),
   stanmodel = .named_model(model_name),
+  stan_data = list(),
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 5000,
@@ -56,6 +57,7 @@ wsre <- function(
   )
   naive_estimate <- naive_ratio_estimate(
     stanmodel = stanmodel,
+    stan_data = stan_data,
     wf_pars = naive_wf_pars,
     n_mcmc_samples = n_mcmc_samples,
     stan_control_params = stan_control_params
@@ -69,6 +71,7 @@ wsre <- function(
     wf_pars <- .extend_list(wf_pars, list(wf_mean = as.array(c(a_mean))))
     sub_obj <- weighted_ratio_estimate(
       stanmodel = stanmodel,
+      stan_data = stan_data,
       wf_pars = wf_pars,
       n_mcmc_samples = n_mcmc_samples,
       stan_control_params = stan_control_params
@@ -98,14 +101,16 @@ wsre <- function(
 
 naive_ratio_estimate <- function(
   stanmodel,
+  stan_data,
   wf_pars,
   n_mcmc_samples,
   stan_control_params
 ) {
 
+  full_data = .extend_list(stan_data, wf_pars)
   stanfit <- rstan::sampling(
     stanmodel,
-    data = wf_pars,
+    data = full_data,
     iter = n_mcmc_samples + 2000,
     warmup = 2000,
     chains = 1,
@@ -150,14 +155,16 @@ naive_ratio_estimate <- function(
 
 weighted_ratio_estimate <- function(
   stanmodel,
+  stan_data,
   wf_pars,
   n_mcmc_samples,
   stan_control_params
 ) {
 
+  full_data = .extend_list(stan_data, wf_pars)
   stanfit <- rstan::sampling(
     object = stanmodel,
-    data = wf_pars,
+    data = full_data,
     iter = n_mcmc_samples + 2000,
     warmup = 2000,
     chains = 1,

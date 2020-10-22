@@ -4,6 +4,7 @@ futile.logger::flog.threshold(futile.logger::TRACE)
 
 weighted_est <- weighted_ratio_estimate(
   stanmodel = wsre:::stanmodels[["normal"]],
+  stan_data = list(),
   wf_pars = list(
     wf_mean = as.array(c(3)),
     wf_sd = as.array(c(2)),
@@ -39,6 +40,7 @@ test_that("The estimates are numerically feasible", {
 
 weighted_est_2d <- weighted_ratio_estimate(
   stanmodel = wsre:::stanmodels[["normal"]],
+  stan_data = list(),
   wf_pars = list(
     wf_mean = as.array(rep(2, times = 2)),
     wf_sd = as.array(rep(2, times = 2)),
