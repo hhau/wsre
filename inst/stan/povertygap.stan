@@ -18,12 +18,8 @@ data {
   vector [N_1] obs_per_group; 
   real <lower = 0> log1p_poverty_threshold;
 
-  // wsre bits
-  // how many dimensions should the target be - commonly 1
-  int <lower = 1> target_dimension;
- 
-  // weighting function params
-  // wf := weighting_function
+  // wsre args
+  int <lower = 0> target_dimension;
   real wf_mean [target_dimension];
   real <lower = 0> wf_sd [target_dimension];
   real <lower = 0> wf_exponent;

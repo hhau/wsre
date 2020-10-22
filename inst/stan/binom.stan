@@ -1,9 +1,6 @@
 data {
-  // actual data - zilch
-
+  // wsre args
   int <lower = 0> target_dimension;
-
-  // weighting function arguments
   real wf_mean [target_dimension];
   real <lower = 0> wf_sd [target_dimension];
   real <lower = 0> wf_exponent;
