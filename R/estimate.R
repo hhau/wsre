@@ -4,7 +4,7 @@
 #' functions.
 #'
 #' @param model_name String: The name of a \code{.stan} file in the 
-#' \code{inss/stan} directory, "normal" or "binom" at the moment. 
+#' \code{inss/stan} directory. 
 #' @param stanmodel stanmodel: output from \code{\link[rstan]{stan_model}}.
 #' Must follow the naming convention in the vignette.
 #' @param stan_data list: other data to pass to Stan. Not related to weighting
@@ -26,7 +26,7 @@
 #' @return A \code{wsre} object for saving / use in other functions
 #' @export
 wsre <- function(
-  model_name = c("normal", "binom"),
+  model_name = names(stanmodels),
   stanmodel = .named_model(model_name),
   stan_data = list(),
   wf_mean = list(-3, 3, 5),
@@ -39,7 +39,7 @@ wsre <- function(
   if (missing(model_name) & missing(stanmodel)) {
     stop("Must supply argument for one of model_name or stanmodel") 
   } else if (!missing(model_name) & missing(stanmodel)) {
-    if (!(model_name %in% c("normal", "binom"))) {
+    if (!(model_name %in% names(stanmodels)) {
       stop("I don't know a model with that model_name")
     }
   } 

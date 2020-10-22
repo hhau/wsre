@@ -1,9 +1,6 @@
 data {
-  // how many dimensions should the target be - commonly 1
-  int <lower = 1> target_dimension;
- 
-  // weighting function params
-  // wf := weighting_function
+  // wsre args
+  int <lower = 0> target_dimension;
   real wf_mean [target_dimension];
   real <lower = 0> wf_sd [target_dimension];
   real <lower = 0> wf_exponent;

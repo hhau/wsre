@@ -14,7 +14,7 @@
 }
 
 .named_model <- function(name) {
-  a_name <- match.arg(arg = name, choices = c("normal", "binom"))
+  a_name <- match.arg(arg = name, choices = names(stanmodels))
   stanmodels[[a_name]]
 }
 

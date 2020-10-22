@@ -5,7 +5,7 @@
 \title{Weighted Self Ratio Estimation}
 \usage{
 wsre(
-  model_name = c("normal", "binom"),
+  model_name = names(stanmodels),
   stanmodel = .named_model(model_name),
   stan_data = list(),
   wf_mean = list(-3, 3, 5),
@@ -17,7 +17,7 @@ wsre(
 }
 \arguments{
 \item{model_name}{String: The name of a \code{.stan} file in the
-\code{inss/stan} directory, "normal" or "binom" at the moment.}
+\code{inss/stan} directory.}
 
 \item{stanmodel}{stanmodel: output from \code{\link[rstan]{stan_model}}.
 Must follow the naming convention in the vignette.}
