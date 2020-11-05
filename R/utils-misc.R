@@ -26,7 +26,7 @@
 #' @export
 null_wsre_data <- list(
   target_dimension = 1,
-  wf_mean = array(dim = 0),
-  wf_sd = array(dim = 0),
+  wf_mean = array(data = 0, dim = 1),
+  wf_sd = array(data = 0, dim = 1),
   wf_exponent = 0
 )
