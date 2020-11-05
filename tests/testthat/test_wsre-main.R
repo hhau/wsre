@@ -1,4 +1,4 @@
-context("wsre method")
+context("wsre function")
 
 # defaults are actually fine for testing? 
 # need more MCMC to avoid warnings

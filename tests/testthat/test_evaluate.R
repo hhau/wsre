@@ -1,4 +1,4 @@
-context("eval method")
+context("evaluate function")
 
 wsre_obj <- wsre(
   model_name = "normal",

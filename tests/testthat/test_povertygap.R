@@ -1,4 +1,4 @@
-context("testing that the povertygap model can be run without errors")
+context("povertygap model can be run without errors")
 
 wsre_est <- wsre(
   model_name = "povertygap",

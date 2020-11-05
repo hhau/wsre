@@ -77,7 +77,7 @@ model {
   target += normal_lpdf(b | 0, 1.0);
   target += normal_lpdf(Intercept | 6, 1);
   target += normal_lpdf(sigma | 0, 0.25);
-  target += inv_gamma_lpdf(sd_1 | 8.918 * 2, 8.644);
+  target += inv_gamma_lpdf(sd_1 | 15.502859, 7.829747);
   target += normal_lpdf(z_1[1] | 0, 0.5);
 
   // this needs to happen again, will never get the variance otherwise

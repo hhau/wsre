@@ -1,4 +1,4 @@
-context("naive_ratio_estimate method")
+context("naive ratio estimate")
 
 futile.logger::flog.threshold(futile.logger::TRACE)
 
