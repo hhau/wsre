@@ -144,7 +144,7 @@ naive_ratio_estimate <- function(
 
   properties <- list(
     sample_mean = apply(x_samples, 2, mean),
-    sample_sd = apply(x_samples, 2, mean),
+    sample_sd = apply(x_samples, 2, sd),
     sample_min = apply(x_samples, 2, min),
     sample_max = apply(x_samples, 2, max),
     sample_10th = apply(x_samples, 2, quantile, 0.1),
@@ -216,7 +216,7 @@ weighted_ratio_estimate <- function(
 
   properties <- list(
     sample_mean = apply(x_samples, 2, mean),
-    sample_sd = apply(x_samples, 2, mean),
+    sample_sd = apply(x_samples, 2, sd),
     sample_min = apply(x_samples, 2, min),
     sample_max = apply(x_samples, 2, max),
     sample_10th = apply(x_samples, 2, quantile, 0.1),
