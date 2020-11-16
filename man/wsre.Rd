@@ -12,7 +12,8 @@ wsre(
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
-  flog_threshold = futile.logger::INFO
+  flog_threshold = futile.logger::INFO,
+  mc_cores = 1
 )
 }
 \arguments{

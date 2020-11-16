@@ -33,7 +33,8 @@ wsre <- function(
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
   n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
-  flog_threshold = futile.logger::INFO
+  flog_threshold = futile.logger::INFO,
+  mc_cores = 1
 ) {
 
   if (missing(model_name) & missing(stanmodel)) {
@@ -66,7 +67,7 @@ wsre <- function(
   # at the moment I'm just going to assume the wf_mean's are sensible,
   # I could figure this out automatically, but not for right now
   # mclapply for cheap speed? parallel logging and dll loading is hard
-  wsre_estimates <- parallel::mclapply(wf_mean, mc.cores = 6, function(a_mean) {
+  wsre_estimates <- parallel::mclapply(wf_mean, mc.cores = mc_cores, function(a_mean) {
     futile.logger::flog.trace(sprintf("Starting mean: %.2f", a_mean))
     wf_pars <- .extend_list(wf_pars, list(wf_mean = as.array(c(a_mean))))
     sub_obj <- weighted_ratio_estimate(
@@ -126,9 +127,9 @@ naive_ratio_estimate <- function(
   x_samples <- as.array(stanfit, pars = "x")[, 1, ] %>% 
     as.vector() %>% 
     array(dim = c(n_mcmc_samples, dim))
-  
+
   bandwidth_vec <- apply(x_samples, 2, stats::bw.SJ)
-  
+
   kde_est <- function(x) {
     kde_func_nd(x_val = x, x_sample_mat = x_samples, bw_vec = bandwidth_vec)
   }
@@ -141,11 +142,22 @@ naive_ratio_estimate <- function(
     exp(log(kde_est(x_nu)) + log(kde_est(x_de)))
   }
 
+  properties <- list(
+    sample_mean = apply(x_samples, 2, mean),
+    sample_sd = apply(x_samples, 2, mean),
+    sample_min = apply(x_samples, 2, min),
+    sample_max = apply(x_samples, 2, max),
+    sample_10th = apply(x_samples, 2, quantile, 0.1),
+    sample_90th = apply(x_samples, 2, quantile, 0.9),
+    bandwidth = bandwidth_vec
+  )
+   
   ratio_obj <- list(
     wf_pars = wf_pars,
     ratio = ratio,
     weighting = weighting,
-    naive_bandwidth = bandwidth_vec
+    naive_bandwidth = bandwidth_vec,
+    properties = properties
   )
 
   class(ratio_obj) <- "wsre_sub"
@@ -176,7 +188,7 @@ weighted_ratio_estimate <- function(
   x_samples <- as.array(stanfit, pars = "x")[, 1, ] %>% 
     as.vector() %>% 
     array(dim = c(n_mcmc_samples, dim))
-  
+
   bandwidth_vec <- apply(x_samples, 2, stats::bw.SJ)
   
   direct_kde_est <- function(x) {
@@ -202,7 +214,22 @@ weighted_ratio_estimate <- function(
     exp(log(direct_kde_est(x_nu)) + log(direct_kde_est(x_de)))
   }
 
-  ratio_obj <- list(wf_pars = wf_pars, ratio = ratio, weighting = weighting)
+  properties <- list(
+    sample_mean = apply(x_samples, 2, mean),
+    sample_sd = apply(x_samples, 2, mean),
+    sample_min = apply(x_samples, 2, min),
+    sample_max = apply(x_samples, 2, max),
+    sample_10th = apply(x_samples, 2, quantile, 0.1),
+    sample_90th = apply(x_samples, 2, quantile, 0.9),
+    bandwidth = bandwidth_vec
+  )
+
+  ratio_obj <- list(
+    wf_pars = wf_pars, 
+    ratio = ratio, 
+    weighting = weighting,
+    properties = properties
+  )
 
   class(ratio_obj) <- "wsre_sub"
   return(ratio_obj)

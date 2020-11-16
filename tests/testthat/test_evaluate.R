@@ -8,7 +8,13 @@ wsre_obj <- wsre(
 good_test_point <- c(x_nu = 0.1, x_de = 0.5)
 bad_test_point  <- c(x_nu = -880, x_de = -87123) # substantially too far away.
 
-good_result <- evaluate(wsre_obj, good_test_point['x_nu'], good_test_point['x_de'])
+good_result <- evaluate(
+  wsre_obj, 
+  good_test_point['x_nu'], 
+  good_test_point['x_de'],
+  mc_cores = 1
+)
+
 bad_result <- evaluate(wsre_obj, bad_test_point['x_nu'], bad_test_point['x_de'])
 
 test_that("Evaluate returns a numeric vector, and it's the correct length", {

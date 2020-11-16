@@ -11,13 +11,18 @@
 #' location to evaluate the estimate at.
 #' @param x_de Numeric Vector: vector of length one or more; denominator 
 #' location to evaluate the estimate at.
+#' @param mc_cores Integer: number of cores to use to evaluate the constituent
+#' estimates in parallel. Passed to \code{mclapply}. Suggest leaving at 1
+#' unless each sub estimate is made up of a very large number of samples (more
+#' than 10,000).
 #'
 #' @return Double: self ratio value
 #' @export
 evaluate <- function(
   wsre_obj,
   x_nu,
-  x_de
+  x_de,
+  mc_cores = 1
 ) {
   
   stopifnot(
@@ -33,7 +38,7 @@ evaluate <- function(
   # vectorising the ratio and weighting operations is key.
   # hardcoded to my machine at the moment because I don't think anyone else will
   # use this
-  res <- parallel::mclapply(1 : n_estimates, mc.cores = 6, function(estimate_index) {
+  res <- parallel::mclapply(1 : n_estimates, mc.cores = mc_cores, function(estimate_index) {
     with(wsre_obj$estimates[[estimate_index]], {
       # set the contributions to the ratio and norm_conts vectors to their
       # sensible values - NA's for numerically garbage things

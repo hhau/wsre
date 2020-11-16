@@ -4,7 +4,7 @@
 \alias{evaluate}
 \title{Evaluate a \code{wsre} object}
 \usage{
-evaluate(wsre_obj, x_nu, x_de)
+evaluate(wsre_obj, x_nu, x_de, mc_cores = 1)
 }
 \arguments{
 \item{wsre_obj}{\code{wsre} object: From \code{\link{wsre}}}
@@ -14,6 +14,11 @@ location to evaluate the estimate at.}
 
 \item{x_de}{Numeric Vector: vector of length one or more; denominator
 location to evaluate the estimate at.}
+
+\item{mc_cores}{Integer: number of cores to use to evaluate the constituent
+estimates in parallel. Passed to \code{mclapply}. Suggest leaving at 1
+unless each sub estimate is made up of a very large number of samples (more
+than 10,000).}
 }
 \value{
 Double: self ratio value

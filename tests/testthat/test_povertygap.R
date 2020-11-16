@@ -4,7 +4,8 @@ wsre_est <- wsre(
   model_name = "povertygap",
   stan_data = stan_data,
   wf_mean = seq(from = 0.01, to = 0.2, length.out = 2),
-  wf_pars = list(wf_sd = array(0.025), wf_exponent = 1, target_dimension = 1)
+  wf_pars = list(wf_sd = array(0.025), wf_exponent = 1, target_dimension = 1),
+  mc_cores = 6
 )
 
 test_that("wsre can call the povertygap model successfully", {
