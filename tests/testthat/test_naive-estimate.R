@@ -13,6 +13,7 @@ naive_est <- naive_ratio_estimate(
     wf_exponent = 0,
     target_dimension = dim
   ),
+  output_properties = list(lower_quantile = 0.25, upper_quantile = 0.75),
   n_mcmc_samples = 800,
   stan_control_params = list(
     adapt_delta = 0.95,

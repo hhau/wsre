@@ -11,6 +11,7 @@ weighted_est <- weighted_ratio_estimate(
     wf_exponent = 1,
     target_dimension = 1
   ),
+  output_properties = list(lower_quantile = 0.25, upper_quantile = 0.75),
   n_mcmc_samples = 800,
   stan_control_params = list(
     adapt_delta = 0.95,
@@ -47,6 +48,7 @@ weighted_est_2d <- weighted_ratio_estimate(
     wf_exponent = 1,
     target_dimension = 2
   ),
+  output_properties = list(lower_quantile = 0.25, upper_quantile = 0.75),
   n_mcmc_samples = 800,
   stan_control_params = list(
     adapt_delta = 0.95,

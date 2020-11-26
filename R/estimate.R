@@ -14,6 +14,11 @@
 #' @param wf_pars Named List: see default for structure; other parameters for
 #' the weighting function. Must have wf_sd as an array, even if univariate.
 #' Stan will throw array/vector type errors if you get this wrong.
+#' @param include_naive: Logical: include the naive (unweighted) estimate in the
+#' final \code{wsre} estimate.
+#' @param output_properties Named List: per-subestimate properties, at the 
+#' moment just a lower and upper quantile of the samples from the weighted 
+#' target.
 #' @param n_mcmc_samples Integer: number of MCMC samples to draw from each of 
 #' the targets, after a fixed 2000 iteration warmup.
 #' @param stan_control_params Named List: see \code{control} section of
@@ -22,6 +27,8 @@
 #' \code{\link[futile.logger]{futile.logger-package}}. Set to 
 #' \code{futile.logger::TRACE} to see informational messages about what is going
 #' on.
+#' @param mc_cores Integer: number of cores to use to evaluate the constituent
+#' estimates in parallel. Passed to \code{mclapply}. 
 #'
 #' @return A \code{wsre} object for saving / use in other functions
 #' @export
@@ -31,6 +38,8 @@ wsre <- function(
   stan_data = list(),
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
+  include_naive = TRUE,
+  output_properties = list(lower_quantile = 0.25, upper_quantile = 0.75),
   n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO,
@@ -61,7 +70,8 @@ wsre <- function(
     stan_data = stan_data,
     wf_pars = naive_wf_pars,
     n_mcmc_samples = n_mcmc_samples,
-    stan_control_params = stan_control_params
+    stan_control_params = stan_control_params,
+    output_properties = output_properties
   )  
 
   # at the moment I'm just going to assume the wf_mean's are sensible,
@@ -75,13 +85,17 @@ wsre <- function(
       stan_data = stan_data,
       wf_pars = wf_pars,
       n_mcmc_samples = n_mcmc_samples,
-      stan_control_params = stan_control_params
+      stan_control_params = stan_control_params,
+      output_properties = output_properties
     )
     return(sub_obj)
   })
-  n_ests <- length(wf_mean) + 1
-  wsre_estimates[[n_ests]] <- naive_estimate
 
+  n_ests <- length(wf_mean) + 1
+  if (include_naive) {
+    wsre_estimates[[n_ests]] <- naive_estimate    
+  }
+  
   # big object - I don't know what to call this
   # this is going to be written to disk quite a bit, so best to keep the info
   # around about how it was created?
@@ -105,7 +119,8 @@ naive_ratio_estimate <- function(
   stan_data,
   wf_pars,
   n_mcmc_samples,
-  stan_control_params
+  stan_control_params,
+  output_properties
 ) {
 
   full_data = .extend_list(stan_data, wf_pars)
@@ -147,8 +162,8 @@ naive_ratio_estimate <- function(
     sample_sd = apply(x_samples, 2, sd),
     sample_min = apply(x_samples, 2, min),
     sample_max = apply(x_samples, 2, max),
-    sample_10th = apply(x_samples, 2, quantile, 0.1),
-    sample_90th = apply(x_samples, 2, quantile, 0.9),
+    sample_lower_quantile = apply(x_samples, 2, quantile, output_properties$lower_quantile),
+    sample_upper_quantile = apply(x_samples, 2, quantile, output_properties$upper_quantile),
     bandwidth = bandwidth_vec
   )
    
@@ -170,7 +185,8 @@ weighted_ratio_estimate <- function(
   stan_data,
   wf_pars,
   n_mcmc_samples,
-  stan_control_params
+  stan_control_params,
+  output_properties
 ) {
 
   full_data = .extend_list(stan_data, wf_pars)
@@ -219,8 +235,8 @@ weighted_ratio_estimate <- function(
     sample_sd = apply(x_samples, 2, sd),
     sample_min = apply(x_samples, 2, min),
     sample_max = apply(x_samples, 2, max),
-    sample_10th = apply(x_samples, 2, quantile, 0.1),
-    sample_90th = apply(x_samples, 2, quantile, 0.9),
+    sample_lower_quantile = apply(x_samples, 2, quantile, output_properties$lower_quantile),
+    sample_upper_quantile = apply(x_samples, 2, quantile, output_properties$upper_quantile),
     bandwidth = bandwidth_vec
   )
 

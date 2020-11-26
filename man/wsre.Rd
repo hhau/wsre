@@ -10,6 +10,8 @@ wsre(
   stan_data = list(),
   wf_mean = list(-3, 3, 5),
   wf_pars = list(wf_sd = as.array(c(2)), wf_exponent = 1, target_dimension = 1),
+  include_naive = TRUE,
+  output_properties = list(lower_quantile = 0.25, upper_quantile = 0.75),
   n_mcmc_samples = 1200,
   stan_control_params = list(adapt_delta = 0.98, max_treedepth = 13),
   flog_threshold = futile.logger::INFO,
@@ -33,6 +35,10 @@ functions.}
 the weighting function. Must have wf_sd as an array, even if univariate.
 Stan will throw array/vector type errors if you get this wrong.}
 
+\item{output_properties}{Named List: per-subestimate properties, at the
+moment just a lower and upper quantile of the samples from the weighted
+target.}
+
 \item{n_mcmc_samples}{Integer: number of MCMC samples to draw from each of
 the targets, after a fixed 2000 iteration warmup.}
 
@@ -43,6 +49,12 @@ the targets, after a fixed 2000 iteration warmup.}
 \code{\link[futile.logger]{futile.logger-package}}. Set to
 \code{futile.logger::TRACE} to see informational messages about what is going
 on.}
+
+\item{mc_cores}{Integer: number of cores to use to evaluate the constituent
+estimates in parallel. Passed to \code{mclapply}.}
+
+\item{include_naive:}{Logical: include the naive (unweighted) estimate in the
+final \code{wsre} estimate.}
 }
 \value{
 A \code{wsre} object for saving / use in other functions

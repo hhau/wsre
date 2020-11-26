@@ -14,7 +14,8 @@
 #' @param mc_cores Integer: number of cores to use to evaluate the constituent
 #' estimates in parallel. Passed to \code{mclapply}. Suggest leaving at 1
 #' unless each sub estimate is made up of a very large number of samples (more
-#' than 10,000).
+#' than 10,000), otherwise the overhead from \code{fork}ing results in a net 
+#' slowdown.
 #'
 #' @return Double: self ratio value
 #' @export
